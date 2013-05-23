@@ -32,8 +32,8 @@ setSizeFull();
 user = new TextField("User:");
 user.setWidth("300px");
 user.setRequired(true);
-user.setInputPrompt("Your username (eg. joe@email.com)");
-user.addValidator(new EmailValidator("Username must be an email address"));
+user.setInputPrompt("Tu nombre de usuario (ej. usuario@email.com)");
+user.addValidator(new EmailValidator("El nombre de usuario debe ser una dirección email"));
 user.setInvalidAllowed(false);
 
 // Create the password input field
@@ -49,7 +49,7 @@ loginButton = new Button("Login", this);
 
 // Add both to a panel
 VerticalLayout fields = new VerticalLayout(user, password, loginButton);
-fields.setCaption("Por favor ingrese usuario y contraseña para acceder a la aplicación. (mcast@utem.cl/passw0rd)");
+fields.setCaption("Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)");
 fields.setSpacing(true);
 fields.setMargin(new MarginInfo(true, true, true, false));
 fields.setSizeUndefined();
@@ -116,7 +116,7 @@ String password = this.password.getValue();
  // Validate username and password with database here. For examples sake
  // I use a dummy username and password.
  //
-boolean isValid = username.equals("mcast@utem.cl")
+boolean isValid = username.equals("alumno@utem.cl")
         && password.equals("passw0rd");
 
 if(isValid){

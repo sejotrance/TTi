@@ -14,7 +14,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     public PanelDeControlAlumno panelDeControl;
     
     public SimpleLoginMainView() {
-    	panelDeControl = new PanelDeControlAlumno("Mauro Castillo");
+    	panelDeControl = new PanelDeControlAlumno("Karin Acuña");
         setCompositionRoot(new CssLayout(panelDeControl));
     }
 

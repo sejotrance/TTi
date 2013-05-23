@@ -42,7 +42,6 @@ public PanelDeControlAlumno() {
         profesorGuia.addSeparator();
 
         profesorGuia.addItem("Cambio Profesor", menuCommand);
-        profesorGuia.addItem("Registrar Profesor Guía", menuCommand);
         
         final MenuBar.MenuItem perfil = menubar.addItem(username, null);
         perfil.addItem("Editar Perfil", menuCommand);
