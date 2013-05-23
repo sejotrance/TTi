@@ -3,6 +3,7 @@ package com.tti.componentes;
 //import com.vaadin.server.ExternalResource;
 import com.tti.SimpleLoginMainView;
 import com.tti.views.Perfil;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -46,6 +47,7 @@ public PanelDeControlAlumno() {
         profesorGuia.addItem("Cambio Profesor", menuCommand);
         
         final MenuBar.MenuItem perfil = menubar.addItem(username, null);
+        perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
         perfil.addItem("Editar Perfil", goProfile);
         perfil.addSeparator();
         perfil.addItem("Cerrar Sesión", menuCommand);
