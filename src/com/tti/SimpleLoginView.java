@@ -14,6 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Button;
 
+@SuppressWarnings("serial")
 public class SimpleLoginView extends CustomComponent implements View,
 Button.ClickListener {
 

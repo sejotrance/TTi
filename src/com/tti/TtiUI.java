@@ -1,5 +1,6 @@
 package com.tti;
 
+import com.tti.views.Perfil;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
@@ -31,7 +32,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(SimpleLoginMainView.NAME,
 	                SimpleLoginMainView.class);
 	        
-	        //getNavigator().addView(PanelDeControlView.NAME, PanelDeControlView.class);
+	        getNavigator().addView(Perfil.NAME, Perfil.class);
 	                       
 	        //
 	        // We use a view change handler to ensure the user is always redirected

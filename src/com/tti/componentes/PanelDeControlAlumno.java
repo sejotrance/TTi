@@ -2,6 +2,7 @@ package com.tti.componentes;
 
 //import com.vaadin.server.ExternalResource;
 import com.tti.SimpleLoginMainView;
+import com.tti.views.Perfil;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.MenuBar;
@@ -17,7 +18,8 @@ public PanelDeControlAlumno() {
     private MenuBar menubar = new MenuBar();
 //    private String username;
     
-    public PanelDeControlAlumno(String username) {
+    @SuppressWarnings("unused")
+	public PanelDeControlAlumno(String username) {
 //    	username = "ASDAS";
         // Save reference to individual items so we can add sub-menu items to
         // them
@@ -44,7 +46,7 @@ public PanelDeControlAlumno() {
         profesorGuia.addItem("Cambio Profesor", menuCommand);
         
         final MenuBar.MenuItem perfil = menubar.addItem(username, null);
-        perfil.addItem("Editar Perfil", menuCommand);
+        perfil.addItem("Editar Perfil", goProfile);
         perfil.addSeparator();
         perfil.addItem("Cerrar Sesión", menuCommand);
         
@@ -62,6 +64,12 @@ public PanelDeControlAlumno() {
     private Command goHome = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);
+        }
+    };
+    
+    private Command goProfile = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(Perfil.NAME);
         }
     };
 

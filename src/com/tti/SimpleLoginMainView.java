@@ -7,6 +7,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Notification;
 
+@SuppressWarnings("serial")
 public class SimpleLoginMainView extends CustomComponent implements View {
 
     public static final String NAME = "";
