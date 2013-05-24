@@ -2,6 +2,7 @@ package com.tti.componentes;
 
 //import com.vaadin.server.ExternalResource;
 import com.tti.SimpleLoginMainView;
+import com.tti.SimpleLoginView;
 import com.tti.views.Perfil;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
@@ -50,7 +51,7 @@ public PanelDeControlAlumno() {
         perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
         perfil.addItem("Editar Perfil", goProfile);
         perfil.addSeparator();
-        perfil.addItem("Cerrar Sesión", menuCommand);
+        perfil.addItem("Cerrar Sesión", logout);
         
         menubar.setHtmlContentAllowed(true);
 
@@ -74,6 +75,17 @@ public PanelDeControlAlumno() {
         	getUI().getNavigator().navigateTo(Perfil.NAME);
         }
     };
+    
+    private Command logout = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	 // "Logout" the user
+            getSession().setAttribute("user", null);
+        	getUI().getNavigator().navigateTo(SimpleLoginView.NAME);
+        }
+    };
+    
+    
+
 
 	
 
