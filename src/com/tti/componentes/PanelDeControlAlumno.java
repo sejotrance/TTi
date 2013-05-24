@@ -3,6 +3,7 @@ package com.tti.componentes;
 //import com.vaadin.server.ExternalResource;
 import com.tti.SimpleLoginMainView;
 import com.tti.SimpleLoginView;
+import com.tti.views.CitaView;
 import com.tti.views.Perfil;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
@@ -27,7 +28,7 @@ public PanelDeControlAlumno() {
         // them
     	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
         final MenuBar.MenuItem reunion = menubar.addItem("Reunión", null);
-        final MenuBar.MenuItem agendar = reunion.addItem("Agendar", null);
+        final MenuBar.MenuItem agendar = reunion.addItem("Agendar", agendarCita);
         
         reunion.addItem("Reprogramar", menuCommand);
         reunion.addSeparator();
@@ -81,6 +82,14 @@ public PanelDeControlAlumno() {
         	 // "Logout" the user
             getSession().setAttribute("user", null);
         	getUI().getNavigator().navigateTo(SimpleLoginView.NAME);
+        }
+    };
+    
+    private Command agendarCita = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	 // "Logout" the user
+            getSession().setAttribute("user", null);
+        	getUI().getNavigator().navigateTo(CitaView.NAME);
         }
     };
     
