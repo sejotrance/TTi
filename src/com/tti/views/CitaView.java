@@ -15,7 +15,7 @@ public class CitaView extends CustomComponent implements View{
 	private PanelDeControlAlumno panelDeControl;
 	public CitaView() {
 		panelDeControl = new PanelDeControlAlumno();
-		calendario = new Calendar("Agendar Cita");
+		calendario = new Calendar();
 		calendario.setWidth("600px");
 		calendario.setHeight("300px");
 		setCompositionRoot(new CssLayout(panelDeControl, calendario));

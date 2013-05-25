@@ -87,8 +87,6 @@ public PanelDeControlAlumno() {
     
     private Command agendarCita = new Command() {
         public void menuSelected(MenuItem selectedItem) {
-        	 // "Logout" the user
-            getSession().setAttribute("user", null);
         	getUI().getNavigator().navigateTo(CitaView.NAME);
         }
     };
