@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.Date;
+
 import com.tti.componentes.PanelDeControlAlumno;
 import com.vaadin.addon.calendar.ui.Calendar;
 import com.vaadin.navigator.View;
@@ -14,10 +16,11 @@ public class CitaView extends CustomComponent implements View{
 	public Calendar calendario;
 	private PanelDeControlAlumno panelDeControl;
 	public CitaView() {
-		panelDeControl = new PanelDeControlAlumno();
+		panelDeControl = new PanelDeControlAlumno("Karin Acuña");
 		calendario = new Calendar();
-		calendario.setWidth("600px");
-		calendario.setHeight("300px");
+		calendario.setSizeFull();
+//		calendario.setStartDate(new Date());
+//		calendario.setEndDate(new Date());
 		setCompositionRoot(new CssLayout(panelDeControl, calendario));
 	}
 	
