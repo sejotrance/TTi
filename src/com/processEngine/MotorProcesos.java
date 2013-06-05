@@ -11,16 +11,15 @@ import org.activiti.engine.RepositoryService;
 public class MotorProcesos {
 	public ProcessEngine processEngine;
 	public RepositoryService repositoryService;
-	public MotorProcesos() {
+	public MotorProcesos() throws FileNotFoundException {
 		processEngine = ProcessEngines.getDefaultProcessEngine();
 		repositoryService = processEngine.getRepositoryService();
-//		String barFileName = "../WebContent/WEB-INF/procesos/AgendarReunion.bar";
-//		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(barFileName));
-		    
-//		repositoryService.createDeployment()
-//		    .name("AgendarReunion.bar")
-//		    .addZipInputStream(inputStream)
-//		    .deploy();
+		String barFileName = "../WebContent/WEB-INF/procesos/AgendarReunion.bar";
+		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(barFileName));
+		repositoryService.createDeployment()
+		    .name("AgendarReunion.bar")
+		    .addZipInputStream(inputStream)
+		    .deploy();
 	}
 	
 }

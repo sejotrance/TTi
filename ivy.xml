@@ -35,6 +35,15 @@
 		<dependency org="com.vaadin.addon"
                 name="vaadin-calendar"
                 rev="2.0.0"/>
+             
+        <dependency org="commons-lang" name="commons-lang" rev="2.4"/>
+        <dependency org="org.mybatis" name="mybatis" rev="3.1.1"/>
+        <dependency org="joda-time" name="joda-time" rev="2.1"/>
+        <dependency org="org.springframework" name="spring-beans" rev="3.1.2.RELEASE"/>
+        <dependency org="org.springframework" name="spring-core" rev="3.1.2.RELEASE"/>
+        <dependency org="org.springframework" name="spring-asm" rev="3.1.2.RELEASE"/>
+        <dependency org="commons-logging" name="commons-logging" rev="1.1.1"/>
+        
 	</dependencies>
 </ivy-module>
     
