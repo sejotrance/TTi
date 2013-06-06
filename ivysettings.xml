@@ -9,6 +9,9 @@
 			<!-- Vaadin Add-on repository -->
 			<ibiblio name="vaadin-addons" usepoms="true" m2compatible="true"
 				root="http://maven.vaadin.com/vaadin-addons" />
+				
+			<ibiblio name="Alfresco Maven Repository" usepoms="true" m2compatible="true"
+				root="https://maven.alfresco.com/nexus/content/groups/public/" />
 
 			<!-- Vaadin snapshots repository -->
 			<ibiblio name="vaadin-snapshots" usepoms="true" m2compatible="true"
@@ -23,6 +26,7 @@
 						pattern="http://dev.vaadin.com/svn/versions/6.8/build/smartsprites/lib/[artifact](-[revision]).[ext]" />
 				</url>
 			</dual>
+			
 		</chain>
 	</resolvers>
 	<modules>

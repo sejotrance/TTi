@@ -12,14 +12,14 @@ public class MotorProcesos {
 	public ProcessEngine processEngine;
 	public RepositoryService repositoryService;
 	public MotorProcesos() throws FileNotFoundException {
-		processEngine = ProcessEngines.getDefaultProcessEngine();
+		/*processEngine = ProcessEngines.getDefaultProcessEngine();
 		repositoryService = processEngine.getRepositoryService();
 		String barFileName = "../WebContent/WEB-INF/procesos/AgendarReunion.bar";
 		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(barFileName));
 		repositoryService.createDeployment()
 		    .name("AgendarReunion.bar")
 		    .addZipInputStream(inputStream)
-		    .deploy();
+		    .deploy();*/
 	}
 	
 }
