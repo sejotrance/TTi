@@ -23,10 +23,11 @@ public class Perfil extends CustomComponent implements View {
 	public Perfil() throws FileNotFoundException {
 		motor = new MotorProcesos();
 		texto = new Label("MIS DATOS DE PERFIL");
-		listaProc = new Label(motor.getInstancias());
+		motor.makeDeployment();
+//		listaProc = new Label(motor.getInstancias());
 		panelDeControl = new  PanelDeControlAlumno("Karin Acuña");
 		datos = new PerfilComponent();
-		setCompositionRoot(new CssLayout(panelDeControl, texto, listaProc, datos));
+		setCompositionRoot(new CssLayout(panelDeControl, texto, datos));
 	}
 	@Override
 	public void enter(ViewChangeEvent event) {

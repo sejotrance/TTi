@@ -1,7 +1,10 @@
 package com.processEngine;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -27,7 +30,7 @@ public class MotorProcesos {
 		instancias = "";
 		ProcessEngines.init();
 		processEngine = ProcessEngineConfiguration
-			    .createStandaloneProcessEngineConfiguration()
+				.createStandaloneInMemProcessEngineConfiguration()
 			    .buildProcessEngine();
 		repositoryService = processEngine.getRepositoryService();
 //		String barFileName = "AgendarReunion.bar";
@@ -50,6 +53,18 @@ public class MotorProcesos {
 		      instancias += name;
 		    }
 		return instancias;
+	}
+	
+	public void makeDeployment() throws FileNotFoundException{
+		URL url = this.getClass().getResource("AgendarReunion.bar");
+		String barFileName = url.toString();
+		File archivo = new File(barFileName);
+		System.out.println(barFileName);
+		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(archivo));
+		repositoryService.createDeployment()
+		    .name("AgendarReunion.bar")
+		    .addZipInputStream(inputStream)
+		    .deploy();
 	}
 	
 }
