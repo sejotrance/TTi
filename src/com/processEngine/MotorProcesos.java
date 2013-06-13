@@ -57,14 +57,19 @@ public class MotorProcesos {
 	
 	public void makeDeployment() throws FileNotFoundException{
 		URL url = this.getClass().getResource("AgendarReunion.bar");
-		String barFileName = url.toString();
+//		String barFileName = url.toString();
+		String barFileName = "C:\\Users\\SEJO\\Documents\\registro_de_alumno.bar";
 		File archivo = new File(barFileName);
 		System.out.println(barFileName);
 		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(archivo));
+//		repositoryService.createDeployment()
+//		    .name("AgendarReunion.bar")
+//		    .addZipInputStream(inputStream)
+//		    .deploy();
 		repositoryService.createDeployment()
-		    .name("AgendarReunion.bar")
-		    .addZipInputStream(inputStream)
-		    .deploy();
+		  .addClasspathResource("com/processEngine/AgendarReunion.bpmn")
+		  .deploy();
+		Log.info("Number of process definitions: " + repositoryService.createProcessDefinitionQuery().count());    
 	}
 	
 }

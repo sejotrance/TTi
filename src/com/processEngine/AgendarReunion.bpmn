@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <collaboration id="Collaboration">
+    <participant id="pool1" name="Pool" processRef="process_pool1"></participant>
+  </collaboration>
+  <process id="agendarReunion" name="Agendar Reunion " isExecutable="true" activiti:candidateStarterGroups="alumno">
+    <userTask id="usertask2" name="Aceptar o Reagendar Reunión" activiti:candidateGroups="profesores">
+      <extensionElements>
+        <activiti:formProperty id="nb1" name="Nombre" type="string" variable="nombreAlumno"></activiti:formProperty>
+        <activiti:formProperty id="acepta" name="Reunión Confirmada" type="boolean" variable="aceptaReu" default="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="observaciones" name="Observaciones" type="string" variable="observaciones"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <userTask id="usertask5" name="Aceptar o Rechazar Reagendación" activiti:candidateGroups="alumno">
+      <extensionElements>
+        <activiti:formProperty id="nh2" name="Nuevo Horario" type="date" variable="fechaSolicitud" datePattern="dd-MM-yyyy" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aceptaReag" name="¿Confirmas el cambio de fecha?" type="boolean" variable="aceptaReg" default="false" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow10" sourceRef="usertask5" targetRef="mailtask8"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="mailtask5" targetRef="usertask2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <userTask id="usertask1" name="Agendar Fecha y Hora" activiti:candidateGroups="alumno">
+      <extensionElements>
+        <activiti:formProperty id="nombreAlumno" name="Nombre" type="string" variable="nombreAlumno" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fechaSolicitud" name="Fecha" type="date" variable="fechaSolicitud" datePattern="dd-MM-yyyy" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nombreProfesor" name="Profesor Asignado" type="string" variable="nombreProfesor" default="Mauro Castillo Valdés" writable="false" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="mailtask5"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway" default="acepta"></exclusiveGateway>
+    <sequenceFlow id="reagenda" name="Reagenda" sourceRef="exclusivegateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aceptaReu == false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="acepta" name="Acepta" sourceRef="exclusivegateway1" targetRef="mailtask6"></sequenceFlow>
+    <startEvent id="startevent1" name="Inicio Proceso"></startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask3" name="Definir Nuevo Horario" activiti:candidateGroups="profesores">
+      <extensionElements>
+        <activiti:formProperty id="horario" name="Nuevo Horario" type="date" variable="fechaSolicitud" datePattern="dd-MM-yyyy" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow8" sourceRef="usertask3" targetRef="mailtask7"></sequenceFlow>
+    <serviceTask id="mailtask5" name="Notificacion Profesor" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="html">
+          <activiti:expression>Estimado ${nombreProfesor}, tiene una hora reservada por el alumno ${nombreAlumno} a las ${fechaSolicitud}.
+
+Saluda Atte.
+
+Sistema de Trabajo de Título</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Tiene una hora agendada</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string>sejo1234@gmail.com</activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>tt@mail.cl</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="mailtask6" name="Notificacion Aceptacion" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="html">
+          <activiti:expression>Estimado/a  ${nombreAlumno} tu reunión fue aceptada por el profesor ${nombreProfesor}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string>sejo1234@gmail.com</activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>mail@mail.com</activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Reunión Aceptada</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="mailtask6" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="mailtask7" name="Notificación Rechazo" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="html">
+          <activiti:expression>Estimado/a  ${nombreAlumno} tu reunión fue rechaza por el profesor ${nombreProfesor}.
+Los motivos fueron los siguientes:
+${observaciones}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Reunión Rechazada</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string>sejo1234@gmail.com</activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>mail@mail.com</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow13" sourceRef="mailtask7" targetRef="usertask5"></sequenceFlow>
+    <serviceTask id="mailtask8" name="Aviso Acept Rech" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="html">
+          <activiti:expression>Profesor ${nombreProfesor}, la reagendación de la de reunión fue [Aceptada o Rechazada] por el alumno ${nombreAlumno}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Reunion [Aceptada o Rechazada]</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string>sejo1234@gmail.com</activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>mail@mail.cl</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow14" sourceRef="mailtask8" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <process id="rocess_pool1" name="process_pool1" isExecutable="true">
+    <laneSet id="laneSet_rocess_pool1">
+      <lane id="lane1"></lane>
+    </laneSet>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="96.0" y="258.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="400.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="406.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="pool1" id="BPMNShape_pool1">
+        <omgdc:Bounds height="0.0" width="500.0" x="160.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask5" id="BPMNShape_mailtask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="357.0" y="244.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask7" id="BPMNShape_mailtask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask8" id="BPMNShape_mailtask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="45.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="96.0" y="285.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="148.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="142.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="195.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="355.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="562.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="702.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="409.0" y="299.0"></omgdi:waypoint>
+        <omgdi:waypoint x="423.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="reagenda" id="BPMNEdge_reagenda">
+        <omgdi:waypoint x="440.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="127.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="49.0" x="-35.0" y="3.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="acepta" id="BPMNEdge_acepta">
+        <omgdi:waypoint x="420.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="409.0" y="244.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="35.0" x="10.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="605.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="755.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
