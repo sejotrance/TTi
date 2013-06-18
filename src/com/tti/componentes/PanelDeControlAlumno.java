@@ -5,6 +5,7 @@ import com.tti.SimpleLoginMainView;
 import com.tti.SimpleLoginView;
 import com.tti.views.CitaView;
 import com.tti.views.Perfil;
+import com.tti.views.ReprogramarView;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
@@ -30,7 +31,7 @@ public PanelDeControlAlumno() {
         final MenuBar.MenuItem reunion = menubar.addItem("Reunión", null);
         final MenuBar.MenuItem agendar = reunion.addItem("Agendar", agendarCita);
         
-        reunion.addItem("Reprogramar", menuCommand);
+        reunion.addItem("Reprogramar", reprogramar);
         reunion.addSeparator();
 
         reunion.addItem("Cancelar", menuCommand);
@@ -91,6 +92,11 @@ public PanelDeControlAlumno() {
         }
     };
     
+    private Command reprogramar = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(ReprogramarView.NAME);
+        }
+    };
     
 
 

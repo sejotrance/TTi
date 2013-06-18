@@ -26,19 +26,23 @@ public class MotorProcesos {
 	public RepositoryService repositoryService;
 	private String instancias;
 	
-	public MotorProcesos() throws FileNotFoundException {
+	public MotorProcesos(){
+
 		instancias = "";
-		ProcessEngines.init();
-		processEngine = ProcessEngineConfiguration
-				.createStandaloneInMemProcessEngineConfiguration()
-			    .buildProcessEngine();
-		repositoryService = processEngine.getRepositoryService();
 //		String barFileName = "AgendarReunion.bar";
 //		ZipInputStream inputStream = new ZipInputStream(new FileInputStream(barFileName));
 //		repositoryService.createDeployment()
 //		    .name("AgendarReunion.bar")
 //		    .addZipInputStream(inputStream)
 //		    .deploy();
+	}
+	
+	public void Crear(){
+		//ProcessEngines.init();
+		processEngine = ProcessEngineConfiguration
+				.createStandaloneInMemProcessEngineConfiguration()
+			    .buildProcessEngine();
+		repositoryService = processEngine.getRepositoryService();
 	}
 	
 	public String getInstancias(){
@@ -55,7 +59,17 @@ public class MotorProcesos {
 		return instancias;
 	}
 	
+	public Long getDefiniciones(){
+		processEngine = ProcessEngines.getDefaultProcessEngine();
+		repositoryService = processEngine.getRepositoryService();
+		long def = repositoryService.createDeploymentQuery().count();
+		System.out.println("Number of process definitions: " + def);
+		return def;
+	}
+	
 	public void makeDeployment() throws FileNotFoundException{
+		processEngine = ProcessEngines.getDefaultProcessEngine();
+		repositoryService = processEngine.getRepositoryService();
 		URL url = this.getClass().getResource("AgendarReunion.bar");
 //		String barFileName = url.toString();
 		String barFileName = "C:\\Users\\SEJO\\Documents\\registro_de_alumno.bar";
@@ -67,9 +81,9 @@ public class MotorProcesos {
 //		    .addZipInputStream(inputStream)
 //		    .deploy();
 		repositoryService.createDeployment()
-		  .addClasspathResource("com/processEngine/AgendarReunion.bpmn")
+		  .addClasspathResource("com/processEngine/AgendarReunion.bar")
 		  .deploy();
-		Log.info("Number of process definitions: " + repositoryService.createProcessDefinitionQuery().count());    
+		    
 	}
 	
 }

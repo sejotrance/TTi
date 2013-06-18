@@ -17,13 +17,13 @@ public class Perfil extends CustomComponent implements View {
 	public static final String NAME = "perfil";
 	private PanelDeControlAlumno panelDeControl;
 	private Label texto;
-	private Label listaProc;
+//	private Label listaProc;
 	private PerfilComponent datos;
 	public MotorProcesos motor;
 	public Perfil() throws FileNotFoundException {
-		motor = new MotorProcesos();
+//		motor = new MotorProcesos();
+//		motor.Crear();
 		texto = new Label("MIS DATOS DE PERFIL");
-		motor.makeDeployment();
 //		listaProc = new Label(motor.getInstancias());
 		panelDeControl = new  PanelDeControlAlumno("Karin Acuña");
 		datos = new PerfilComponent();
