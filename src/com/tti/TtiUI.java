@@ -1,5 +1,6 @@
 package com.tti;
 
+import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.Perfil;
 import com.tti.views.ReprogramarView;
@@ -35,6 +36,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(Perfil.NAME, Perfil.class);
 	        getNavigator().addView(CitaView.NAME, CitaView.class);
 	        getNavigator().addView(ReprogramarView.NAME, ReprogramarView.class);
+	        getNavigator().addView(AvanceView.NAME, AvanceView.class);
 	                       
 	        //
 	        // We use a view change handler to ensure the user is always redirected

@@ -3,6 +3,7 @@ package com.tti.componentes;
 //import com.vaadin.server.ExternalResource;
 import com.tti.SimpleLoginMainView;
 import com.tti.SimpleLoginView;
+import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.Perfil;
 import com.tti.views.ReprogramarView;
@@ -37,7 +38,7 @@ public PanelDeControlAlumno() {
         reunion.addItem("Cancelar", menuCommand);
 
         final MenuBar.MenuItem avance = menubar.addItem("Mi Avance", null);
-        avance.addItem("Revisar Mi Avance", menuCommand);
+        avance.addItem("Revisar Mi Avance", miAvance);
         avance.addSeparator();
 
         avance.addItem("Actualizar mi Informe", menuCommand);
@@ -95,6 +96,12 @@ public PanelDeControlAlumno() {
     private Command reprogramar = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(ReprogramarView.NAME);
+        }
+    };
+    
+    private Command miAvance = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(AvanceView.NAME);
         }
     };
     
