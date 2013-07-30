@@ -8,12 +8,14 @@ import java.util.Locale;
 
 import com.processEngine.MotorProcesos;
 import com.tti.TtiUI;
+import com.tti.componentes.CitaComponent;
 import com.tti.componentes.PanelDeControlAlumno;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
 import com.vaadin.addon.calendar.event.CalendarEvent;
 import com.vaadin.addon.calendar.ui.Calendar;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClick;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
@@ -28,6 +30,7 @@ import com.vaadin.event.Action;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -41,8 +44,10 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -113,12 +118,19 @@ public class CitaView extends CustomComponent implements View{
 		
 		nuevaReunion.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-                Date start = new Date();
-                start.setTime(0);
-
-                Date end = Calendar.getEndOfDay(calendar, start);
-
-                showEventPopup(createNewEvent(start, end), true);
+//                Date start = new Date();
+//                start.setTime(0);
+//
+//                Date end = Calendar.getEndOfDay(calendar, start);
+//
+//                showEventPopup(createNewEvent(start, end), true);
+				CitaComponent cita = new CitaComponent();
+				 final Window dialog = new Window("Modal dialog");
+				 dialog.setModal(true);
+				 dialog.setContent(cita);
+				 UI.getCurrent().addWindow(dialog);
+				 
+				 
             }
 		});
 		
@@ -133,6 +145,16 @@ public class CitaView extends CustomComponent implements View{
 		GregorianCalendar end   = calendar;
 		
 		end.add(java.util.Calendar.HOUR, 2);
+		
+		calendario.setHandler(new EventClickHandler() {
+		    public void eventClick(EventClick event) {
+		        BasicEvent e = (BasicEvent) event.getCalendarEvent();
+
+		        // Do something with it
+		        new Notification("Event clicked: " + e.getCaption(),
+		            e.getDescription()).show(Page.getCurrent());
+		    }
+		});
 		
 		calendario.addEvent(new BasicEvent("Reunión definición TT",
 		        "El objetivo es definir el tema del trabajo de título",
