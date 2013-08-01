@@ -124,12 +124,24 @@ public class CitaView extends CustomComponent implements View{
 //                Date end = Calendar.getEndOfDay(calendar, start);
 //
 //                showEventPopup(createNewEvent(start, end), true);
-				CitaComponent cita = new CitaComponent();
-				 final Window dialog = new Window("Modal dialog");
+				 CitaComponent cita = new CitaComponent();
+				 final Window dialog = new Window("Agendar Reunión");
 				 dialog.setModal(true);
+				 dialog.setWidth("300px");
+				 dialog.setHeight("400px");
+				 dialog.setResizable(false);
 				 dialog.setContent(cita);
-				 UI.getCurrent().addWindow(dialog);
 				 
+				 dialog.addCloseListener(new CloseListener() {
+					
+					@Override
+					public void windowClose(CloseEvent e) {
+						// TODO Auto-generated method stub
+						new Notification("asas").show(Page.getCurrent());;
+					}
+				});
+				 
+				 UI.getCurrent().addWindow(dialog);
 				 
             }
 		});
@@ -178,6 +190,8 @@ public class CitaView extends CustomComponent implements View{
         botonMes.setVisible(viewMode == Mode.WEEK);
         botonSem.setVisible(viewMode == Mode.DAY);
         addInitialEvents();
+        
+        
 	}
 	
 	@Override
@@ -272,6 +286,8 @@ public class CitaView extends CustomComponent implements View{
             updateMesLabel();
         }
     }
+    
+    
 
     /*
      * Resets the calendar time (hour, minute second and millisecond) either to
