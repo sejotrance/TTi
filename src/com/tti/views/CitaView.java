@@ -14,6 +14,8 @@ import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
 import com.vaadin.addon.calendar.event.CalendarEvent;
 import com.vaadin.addon.calendar.ui.Calendar;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickEvent;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectEvent;
@@ -124,24 +126,8 @@ public class CitaView extends CustomComponent implements View{
 //                Date end = Calendar.getEndOfDay(calendar, start);
 //
 //                showEventPopup(createNewEvent(start, end), true);
-				 CitaComponent cita = new CitaComponent();
-				 final Window dialog = new Window("Agendar Reunión");
-				 dialog.setModal(true);
-				 dialog.setWidth("300px");
-				 dialog.setHeight("400px");
-				 dialog.setResizable(false);
-				 dialog.setContent(cita);
-				 
-				 dialog.addCloseListener(new CloseListener() {
-					
-					@Override
-					public void windowClose(CloseEvent e) {
-						// TODO Auto-generated method stub
-						new Notification("asas").show(Page.getCurrent());;
-					}
-				});
-				 
-				 UI.getCurrent().addWindow(dialog);
+				BasicEvent nuevaReunion = new BasicEvent();
+				creaPopupCita(nuevaReunion);
 				 
             }
 		});
@@ -158,16 +144,28 @@ public class CitaView extends CustomComponent implements View{
 		
 		end.add(java.util.Calendar.HOUR, 2);
 		
+		calendario.setHandler(new DateClickHandler() {
+			
+			@Override
+			public void dateClick(DateClickEvent event) {
+				Date fechaDiaSelec = event.getDate();
+				BasicEvent nuevaReunion = new BasicEvent();
+				nuevaReunion.setStart(fechaDiaSelec);
+				nuevaReunion.setEnd(fechaDiaSelec);
+				creaPopupCita(nuevaReunion);
+				
+			}
+		});
+		
+		
 		calendario.setHandler(new EventClickHandler() {
 		    public void eventClick(EventClick event) {
 		        BasicEvent e = (BasicEvent) event.getCalendarEvent();
 
-		        // Do something with it
-		        new Notification("Event clicked: " + e.getCaption(),
-		            e.getDescription()).show(Page.getCurrent());
+		        creaPopupCita(e);
 		    }
 		});
-		
+	
 		calendario.addEvent(new BasicEvent("Reunión definición TT",
 		        "El objetivo es definir el tema del trabajo de título",
 		        start.getTime(), end.getTime()));
@@ -677,6 +675,31 @@ public class CitaView extends CustomComponent implements View{
             .setResolution(resolution);
             ((DateField) scheduleEventForm.getField("end")).markAsDirty();
         }
+    }
+    
+    private void creaPopupCita(BasicEvent e){
+    	CitaComponent cita = new CitaComponent();
+		 final Window dialog = new Window("Agendar Reunión");
+		 cita.setFechaDesde(e.getStart());
+		 cita.setFechaHasta(e.getEnd());
+		 cita.setAsunto(e.getCaption());
+		 cita.setDescripcion(e.getDescription());
+		 dialog.setModal(true);
+		 dialog.setWidth("300px");
+		 dialog.setHeight("400px");
+		 dialog.setResizable(false);
+		 dialog.setContent(cita);
+		 
+		 dialog.addCloseListener(new CloseListener() {
+			
+			@Override
+			public void windowClose(CloseEvent e) {
+				// TODO Auto-generated method stub
+				new Notification("asas").show(Page.getCurrent());;
+			}
+		});
+		 
+		 UI.getCurrent().addWindow(dialog);
     }
     
     
