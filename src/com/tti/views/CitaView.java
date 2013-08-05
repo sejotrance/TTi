@@ -6,51 +6,27 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import com.processEngine.MotorProcesos;
-import com.tti.TtiUI;
 import com.tti.componentes.CitaComponent;
 import com.tti.componentes.PanelDeControlAlumno;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
-import com.vaadin.addon.calendar.event.CalendarEvent;
 import com.vaadin.addon.calendar.ui.Calendar;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClickHandler;
-import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
-import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.event.Action;
-import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
-import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
@@ -65,14 +41,8 @@ public class CitaView extends CustomComponent implements View{
 	private Mode viewMode;
 	public Label mesLabel;
 	
-	private final FieldGroup scheduleEventForm = new FieldGroup();
-	private Window scheduleEventPopup;
-	private Button deleteEventButton;
-    private Button applyEventButton;
-    private BasicEventProvider dataSource;
-    private boolean useSecondResolution;
-	
-	public Calendar calendario;
+	private BasicEventProvider dataSource;
+    public Calendar calendario;
 	private GregorianCalendar calendar;
 	public Button botonMes = new Button("Mes");
 	public Button botonSem = new Button("Semana");
@@ -80,8 +50,6 @@ public class CitaView extends CustomComponent implements View{
 	public Button botonPrev = new Button("Atrás");
 	public Button nuevaReunion = new Button("Nueva reunión");
 	private PanelDeControlAlumno panelDeControl;
-	private MotorProcesos motor;
-	
 	private Date currentMonthsFirstDate;
 	
 	public CitaView() throws FileNotFoundException {
@@ -120,13 +88,9 @@ public class CitaView extends CustomComponent implements View{
 		
 		nuevaReunion.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-//                Date start = new Date();
-//                start.setTime(0);
-//
-//                Date end = Calendar.getEndOfDay(calendar, start);
-//
-//                showEventPopup(createNewEvent(start, end), true);
 				BasicEvent nuevaReunion = new BasicEvent();
+				nuevaReunion.setStart(new Date());
+				nuevaReunion.setEnd(new Date());
 				creaPopupCita(nuevaReunion);
 				 
             }
@@ -337,155 +301,6 @@ public class CitaView extends CustomComponent implements View{
         }
     }
     
-    private void handleRangeSelect(RangeSelectEvent event) {
-        Date start = event.getStart();
-        Date end = event.getEnd();
-
-        /*
-         * If a range of dates is selected in monthly mode, we want it to end at
-         * the end of the last day.
-         */
-        if (event.isMonthlyMode()) {
-            end = Calendar.getEndOfDay(calendar, end);
-        }
-
-        showEventPopup(createNewEvent(start, end), true);
-    }
-    
-    private CalendarEvent createNewEvent(Date startDate, Date endDate) {
-
-        BasicEvent event = new BasicEvent();
-        event.setCaption("");
-        event.setStart(startDate);
-        event.setEnd(endDate);
-        event.setStyleName("color1");
-        return event;
-    }
-    
-    private void showEventPopup(CalendarEvent event, boolean newEvent) {
-        if (event == null) {
-            return;
-        }
-
-        updateCalendarEventPopup(newEvent);
-        updateCalendarEventForm(event);
-
-        if (!TtiUI.getCurrent().getWindows().contains(scheduleEventPopup)) {
-        	TtiUI.getCurrent().addWindow(scheduleEventPopup);
-        }
-    }
-    
-    private void updateCalendarEventPopup(boolean newEvent) {
-        if (scheduleEventPopup == null) {
-            createCalendarEventPopup();
-        }
-
-        if (newEvent) {
-            scheduleEventPopup.setCaption("New event");
-        } else {
-            scheduleEventPopup.setCaption("Edit event");
-        }
-
-        deleteEventButton.setVisible(!newEvent);
-        deleteEventButton.setEnabled(!calendario.isReadOnly());
-        applyEventButton.setEnabled(!calendario.isReadOnly());
-    }
-    
-    /* Initializes a modal window to edit schedule event. */
-    private void createCalendarEventPopup() {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-
-        scheduleEventPopup = new Window(null, layout);
-        scheduleEventPopup.setWidth("400px");
-        scheduleEventPopup.setModal(true);
-        scheduleEventPopup.center();
-
-        layout.addComponent((Component) scheduleEventForm);
-
-        applyEventButton = new Button("Apply");
-        applyEventButton.addClickListener(new Button.ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            public void buttonClick(ClickEvent event) {
-                try {
-					commitCalendarEvent();
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
-        Button cancel = new Button("Cancel");
-        cancel.addClickListener(new Button.ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            public void buttonClick(ClickEvent event) {
-                discardCalendarEvent();
-            }
-        });
-        deleteEventButton = new Button("Delete", new Button.ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            public void buttonClick(ClickEvent event) {
-                deleteCalendarEvent();
-            }
-        });
-        scheduleEventPopup.addCloseListener(new CloseListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            public void windowClose(CloseEvent e) {
-                discardCalendarEvent();
-            }
-        });
-
-        HorizontalLayout buttons = new HorizontalLayout();
-        buttons.setSpacing(true);
-        buttons.addComponent(deleteEventButton);
-        buttons.addComponent(applyEventButton);
-        buttons.addComponent(cancel);
-        layout.addComponent(buttons);
-        layout.setComponentAlignment(buttons, Alignment.BOTTOM_RIGHT);
-    }
-    
-    /* Removes the event from the data source and fires change event. */
-    private void deleteCalendarEvent() {
-        BasicEvent event = getFormCalendarEvent();
-        if (dataSource.containsEvent(event)) {
-            dataSource.removeEvent(event);
-        }
-        TtiUI.getCurrent().removeWindow(scheduleEventPopup);
-    }
-
-    /* Adds/updates the event in the data source and fires change event. */
-    private void commitCalendarEvent() throws CommitException {
-        scheduleEventForm.commit();
-        BasicEvent event = getFormCalendarEvent();
-        if (!dataSource.containsEvent(event)) {
-            dataSource.addEvent(event);
-        }
-
-        TtiUI.getCurrent().getWindows().remove(scheduleEventPopup);
-    }
-
-    private void discardCalendarEvent() {
-        scheduleEventForm.discard();
-        TtiUI.getCurrent().getWindows().remove(scheduleEventPopup);
-    }
-
-    @SuppressWarnings("unchecked")
-    private BasicEvent getFormCalendarEvent() {
-        BeanItem<CalendarEvent> item = (BeanItem<CalendarEvent>) scheduleEventForm
-                .getItemDataSource();
-        CalendarEvent event = item.getBean();
-        return (BasicEvent) event;
-    }
-    
     private void addInitialEvents() {
         Date originalDate = calendar.getTime();
         Date today = new Date();
@@ -560,122 +375,7 @@ public class CitaView extends CustomComponent implements View{
 
         return event;
     }
-    
-    private void updateCalendarEventForm(CalendarEvent event) {
-        // Lets create a CalendarEvent BeanItem and pass it to the form's data
-        // source.
-        BeanItem<CalendarEvent> item = new BeanItem<CalendarEvent>(event);
-        scheduleEventForm.setBuffered(true);
-        scheduleEventForm.setItemDataSource(item);
-        scheduleEventForm.setFieldFactory(new FieldGroupFieldFactory() {
-
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("rawtypes")
-			public Field createField(Item item, Object propertyId,
-                    Component uiContext) {
-                if (propertyId.equals("caption")) {
-                	TextArea f = createTextField("Caption");
-                    f.focus();
-                    return f;
-
-                } else if (propertyId.equals("where")) {
-                    return createTextField("Where");
-
-                } else if (propertyId.equals("description")) {
-                    TextArea f = createTextField("Description");
-                    f.setRows(3);
-                    return f;
-
-                } else if (propertyId.equals("styleName")) {
-                    return createStyleNameSelect();
-
-                } else if (propertyId.equals("start")) {
-                    return createDateField("Start date");
-
-                } else if (propertyId.equals("end")) {
-                    return createDateField("End date");
-                } else if (propertyId.equals("allDay")) {
-                    CheckBox cb = createCheckBox("All-day");
-
-                    cb.addValueChangeListener(new Property.ValueChangeListener() {
-
-                        private static final long serialVersionUID = -7104996493482558021L;
-
-                        public void valueChange(ValueChangeEvent event) {
-                            Object value = event.getProperty().getValue();
-                            if (value instanceof Boolean
-                                    && Boolean.TRUE.equals(value)) {
-                                setFormDateResolution(Resolution.DAY);
-
-                            } else {
-                                setFormDateResolution(Resolution.MINUTE);
-                            }
-                        }
-
-                    });
-
-                    return cb;
-                }
-                return null;
-            }
-
-            private CheckBox createCheckBox(String caption) {
-                CheckBox cb = new CheckBox(caption);
-                cb.setImmediate(true);
-                return cb;
-            }
-
-            private TextArea createTextField(String caption) {
-            	TextArea f = new TextArea(caption);
-                f.setNullRepresentation("");
-                return f;
-            }
-
-            private DateField createDateField(String caption) {
-                DateField f = new DateField(caption);
-                if (useSecondResolution) {
-                    f.setResolution(Resolution.SECOND);
-                } else {
-                    f.setResolution(Resolution.MINUTE);
-                }
-                return f;
-            }
-
-            @SuppressWarnings("unchecked")
-			private ComboBox createStyleNameSelect() {
-            	ComboBox s = new ComboBox("Color");
-                s.addContainerProperty("c", String.class, "");
-                s.setItemCaptionPropertyId("c");
-                Item i = s.addItem("color1");
-                i.getItemProperty("c").setValue("Green");
-                i = s.addItem("color2");
-                i.getItemProperty("c").setValue("Blue");
-                i = s.addItem("color3");
-                i.getItemProperty("c").setValue("Red");
-                i = s.addItem("color4");
-                i.getItemProperty("c").setValue("Orange");
-                return s;
-            }
-        });
-
-//        scheduleEventForm
-//        .setVisibleItemProperties(new Object[] { "start", "end",
-//                "allDay", "caption", "where", "description",
-//        "styleName" });
-    }
-    
-    private void setFormDateResolution(Resolution resolution) {
-        if (scheduleEventForm.getField("start") != null
-                && scheduleEventForm.getField("end") != null) {
-            ((DateField) scheduleEventForm.getField("start"))
-            .setResolution(resolution);
-            ((DateField) scheduleEventForm.getField("start")).markAsDirty();
-            ((DateField) scheduleEventForm.getField("end"))
-            .setResolution(resolution);
-            ((DateField) scheduleEventForm.getField("end")).markAsDirty();
-        }
-    }
+ 
     
     private void creaPopupCita(BasicEvent e){
     	CitaComponent cita = new CitaComponent();
