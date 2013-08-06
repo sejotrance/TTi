@@ -54,6 +54,8 @@ public class CitaWindow extends Window {
 	
 	public GregorianCalendar fechaDesde;
 	public GregorianCalendar fechaHasta;
+	public String asunto;
+	public String descripcion;
 	private static final long serialVersionUID = -1084443510397871343L;
 	/**
 	 * The constructor should first build the main layout, set the
@@ -205,17 +207,21 @@ public class CitaWindow extends Window {
 	/* SETTERS */
 	public void setFechaDesde(Date fechaDesde){
 		DateFieldDesde.setValue(fechaDesde);
+		this.fechaDesde.setTime(fechaDesde);
 	}
 	
 	public void setFechaHasta(Date fechaHasta){
 		DateFieldHasta.setValue(fechaHasta);
+		this.fechaHasta.setTime(fechaHasta);
 	}
 	
 	public void setAsunto(String asunto){
 		AsuntoTextField.setValue(asunto);
+		this.asunto = asunto;
 	}
 	public void setDescripcion(String descripcion){
 		DescripcionTextArea.setValue(descripcion);
+		this.descripcion = descripcion;
 	}
 	void setAgendar(boolean set){
 		agendar = set;
@@ -228,19 +234,19 @@ public class CitaWindow extends Window {
 	}
 	
 	/* GETTERS */
-	public Date getFechaDesde(){
-		return DateFieldDesde.getValue();
+	public GregorianCalendar getFechaDesde(){
+		return fechaDesde;
 	}
 	
-	public Date getFechaHasta(){
-		return DateFieldHasta.getValue();
+	public GregorianCalendar getFechaHasta(){
+		return fechaHasta;
 	}
 	
 	public String getAsunto(){
-		return AsuntoTextField.getValue();
+		return asunto;
 	}
 	public String getDescripcion(){
-		return DescripcionTextArea.getValue();
+		return descripcion;
 	}
 	boolean getAgendar(){
 		return agendar;
@@ -265,6 +271,11 @@ public class CitaWindow extends Window {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				agendar = true;
+				asunto = AsuntoTextField.getValue();
+				descripcion = DescripcionTextArea.getValue();
+				fechaDesde.setTime(DateFieldDesde.getValue());
+				fechaHasta.setTime(DateFieldHasta.getValue());
+				close();
 				
 			}
 		});

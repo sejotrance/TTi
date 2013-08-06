@@ -40,6 +40,7 @@ public class CitaView extends CustomComponent implements View{
     }
 	private Mode viewMode;
 	public Label mesLabel;
+	private CitaWindow cita;
 	
 	private BasicEventProvider dataSource;
     public Calendar calendario;
@@ -378,25 +379,30 @@ public class CitaView extends CustomComponent implements View{
  
     
     private void creaPopupCita(BasicEvent e){
-		 final CitaWindow dialog = new CitaWindow();
-		 dialog.setFechaDesde(e.getStart());
-		 dialog.setFechaHasta(e.getEnd());
-		 dialog.setAsunto(e.getCaption());
-		 dialog.setDescripcion(e.getDescription());
-		 dialog.setModal(true);
-		 dialog.setWidth("300px");
-		 dialog.setHeight("400px");
-		 dialog.setResizable(false);
+		 cita = new CitaWindow();
+		 cita.setFechaDesde(e.getStart());
+		 cita.setFechaHasta(e.getEnd());
+		 cita.setAsunto(e.getCaption());
+		 cita.setDescripcion(e.getDescription());
+		 cita.setModal(true);
+		 cita.setWidth("300px");
+		 cita.setHeight("400px");
+		 cita.setResizable(false);
 		 
-		 dialog.addCloseListener(new CloseListener() {
+		 cita.addCloseListener(new CloseListener() {
 			
 			@Override
 			public void windowClose(CloseEvent e) {
-				//new Notification("asas").show(Page.getCurrent());;
+				BasicEvent miCita = new BasicEvent();
+				GregorianCalendar fechaDesde = cita.getFechaDesde();
+				GregorianCalendar fechaHasta = cita.getFechaHasta();
+				miCita = getNewEvent(cita.getAsunto(), fechaDesde.getTime(), fechaHasta.getTime());
+				dataSource.addEvent(miCita);
+				
 			}
 		});
 		 
-		 UI.getCurrent().addWindow(dialog);
+		 UI.getCurrent().addWindow(cita);
     }
     
     
