@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import com.tti.componentes.CitaComponent;
 import com.tti.componentes.PanelDeControlAlumno;
+import com.tti.windows.CitaWindow;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
 import com.vaadin.addon.calendar.ui.Calendar;
@@ -378,24 +378,21 @@ public class CitaView extends CustomComponent implements View{
  
     
     private void creaPopupCita(BasicEvent e){
-    	CitaComponent cita = new CitaComponent();
-		 final Window dialog = new Window("Agendar Reunión");
-		 cita.setFechaDesde(e.getStart());
-		 cita.setFechaHasta(e.getEnd());
-		 cita.setAsunto(e.getCaption());
-		 cita.setDescripcion(e.getDescription());
+		 final CitaWindow dialog = new CitaWindow();
+		 dialog.setFechaDesde(e.getStart());
+		 dialog.setFechaHasta(e.getEnd());
+		 dialog.setAsunto(e.getCaption());
+		 dialog.setDescripcion(e.getDescription());
 		 dialog.setModal(true);
 		 dialog.setWidth("300px");
 		 dialog.setHeight("400px");
 		 dialog.setResizable(false);
-		 dialog.setContent(cita);
 		 
 		 dialog.addCloseListener(new CloseListener() {
 			
 			@Override
 			public void windowClose(CloseEvent e) {
-				// TODO Auto-generated method stub
-				new Notification("asas").show(Page.getCurrent());;
+				//new Notification("asas").show(Page.getCurrent());;
 			}
 		});
 		 
