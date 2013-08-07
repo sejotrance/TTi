@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import com.tti.TtiUI;
 import com.tti.componentes.PanelDeControlAlumno;
 import com.tti.windows.CitaWindow;
 import com.vaadin.addon.calendar.event.BasicEvent;
@@ -15,6 +16,8 @@ import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClickHandler;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectEvent;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 import com.vaadin.navigator.View;
@@ -100,7 +103,11 @@ public class CitaView extends CustomComponent implements View{
 			
 		mesLabel = new Label();
 		dataSource = new BasicEventProvider();
-		calendario = new Calendar(dataSource);
+		calendario = new Calendar();
+		TtiUI.container.sort(new Object[]{"start"}, new boolean[]{true});
+
+		calendario.setContainerDataSource(TtiUI.container, "caption",
+		    "description", "start", "end", "styleName");
 		calendario.setSizeFull();
 		calendario.setLocale(Locale.getDefault());
 		calendar = new GregorianCalendar();
@@ -126,11 +133,21 @@ public class CitaView extends CustomComponent implements View{
 		calendario.setHandler(new EventClickHandler() {
 		    public void eventClick(EventClick event) {
 		        BasicEvent e = (BasicEvent) event.getCalendarEvent();
-
+	        	
 		        creaPopupCita(e);
 		    }
 		});
-	
+		
+		calendario.setHandler(new RangeSelectHandler() {
+		
+			public void rangeSelect(RangeSelectEvent event) {
+				 BasicEvent calendarEvent = new BasicEvent();
+				 calendarEvent.setStart(event.getStart());
+				 calendarEvent.setEnd(event.getEnd());
+				 creaPopupCita(calendarEvent);
+				
+			}
+		});
 		calendario.addEvent(new BasicEvent("Reunión definición TT",
 		        "El objetivo es definir el tema del trabajo de título",
 		        start.getTime(), end.getTime()));
@@ -152,7 +169,6 @@ public class CitaView extends CustomComponent implements View{
         
         botonMes.setVisible(viewMode == Mode.WEEK);
         botonSem.setVisible(viewMode == Mode.DAY);
-        addInitialEvents();
         
         
 	}
@@ -382,8 +398,15 @@ public class CitaView extends CustomComponent implements View{
 		 cita = new CitaWindow();
 		 cita.setFechaDesde(e.getStart());
 		 cita.setFechaHasta(e.getEnd());
-		 cita.setAsunto(e.getCaption());
-		 cita.setDescripcion(e.getDescription());
+		 if(e.getCaption() != null){
+			 cita.setAsunto(e.getCaption());
+		 }else cita.setAsunto("");
+		 if(e.getDescription() != null){
+			 cita.setDescripcion(e.getDescription());
+		 }else{
+			 cita.setDescripcion("");
+		 }
+		 cita.setDiaCompleto(e.isAllDay());
 		 cita.setModal(true);
 		 cita.setWidth("300px");
 		 cita.setHeight("400px");
@@ -396,8 +419,16 @@ public class CitaView extends CustomComponent implements View{
 				BasicEvent miCita = new BasicEvent();
 				GregorianCalendar fechaDesde = cita.getFechaDesde();
 				GregorianCalendar fechaHasta = cita.getFechaHasta();
-				miCita = getNewEvent(cita.getAsunto(), fechaDesde.getTime(), fechaHasta.getTime());
-				dataSource.addEvent(miCita);
+				miCita.setCaption(cita.getAsunto());
+				miCita.setDescription(cita.getDescripcion());
+				miCita.setStart(fechaDesde.getTime());
+				miCita.setEnd(fechaHasta.getTime());
+				miCita.setAllDay(cita.getDiaCompleto());
+				if(cita.AGENDAR){
+					TtiUI.container.addBean(miCita);
+				}else if(cita.ELIMINAR){
+					TtiUI.container.removeItem(miCita);
+				}
 				
 			}
 		});

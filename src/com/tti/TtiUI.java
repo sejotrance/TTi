@@ -1,10 +1,16 @@
 package com.tti;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.ReprogramarView;
+import com.vaadin.addon.calendar.event.BasicEvent;
+import com.vaadin.addon.calendar.ui.Calendar;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
@@ -15,7 +21,11 @@ import com.vaadin.ui.UI;
  */
 @SuppressWarnings("serial")
 public class TtiUI extends UI {
-
+	private Calendar calendario;
+	private GregorianCalendar calendar;
+	public static BeanItemContainer<BasicEvent> container;
+	
+	
 	 	@Override
 	    protected void init(VaadinRequest request) {
 
@@ -26,6 +36,11 @@ public class TtiUI extends UI {
 	        new Navigator(this, this);
 
 	        //
+	        calendario = new Calendar();
+	        calendar = new GregorianCalendar();
+	        container = new BeanItemContainer<BasicEvent>(BasicEvent.class);
+	        addInitialEvents();
+	        
 	        // The initial log view where the user can login to the application
 	        //
 	        getNavigator().addView(SimpleLoginView.NAME, SimpleLoginView.class);
@@ -74,5 +89,77 @@ public class TtiUI extends UI {
 	            }
 	        });
 	    }
+	 	
+	 	private void addInitialEvents() {
+	    	Date today = new Date();
+	        // Add a event that last a whole week
+	        Date start = calendario.getFirstDateForWeek(today);
+	        Date end = calendario.getLastDateForWeek(today);
+	        BasicEvent event = getNewEvent("Evento de Semana completa", start, end);
+	        event.setAllDay(true);
+	        event.setStyleName("color4");
+	        event.setDescription("Este evento tiene una duración que abarca la semana completa.");
+	        container.addBean(event);
+
+	        // Add a allday event
+	        calendar.setTime(start);
+	        calendar.add(GregorianCalendar.DATE, 3);
+	        start = calendar.getTime();
+	        end = start;
+	        event = getNewEvent("Reuniones de Acreditación", start, end);
+	        event.setAllDay(true);
+	        event.setDescription("Evento de día completo");
+	        event.setStyleName("color3");
+	        container.addBean(event);
+
+	        // Add a second allday event
+	        calendar.add(GregorianCalendar.DATE, 1);
+	        start = calendar.getTime();
+	        end = start;
+	        event = getNewEvent("Día de la ingenieria", start, end);
+	        event.setAllDay(true);
+	        event.setDescription("Otro evento de día completo.");
+	        event.setStyleName("color2");
+	        container.addBean(event);
+
+	        calendar.add(GregorianCalendar.DATE, -3);
+	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
+	        calendar.set(GregorianCalendar.MINUTE, 30);
+	        start = calendar.getTime();
+	        calendar.add(GregorianCalendar.HOUR_OF_DAY, 5);
+	        calendar.set(GregorianCalendar.MINUTE, 0);
+	        end = calendar.getTime();
+	        event = getNewEvent("Reunión de Avance", start, end);
+	        event.setStyleName("color1");
+	        event.setDescription("Quisiera que revisaramos si estoy cumpliendo con los alcances del proyecto.");
+	        container.addBean(event);
+
+	        calendar.add(GregorianCalendar.DATE, 1);
+	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 11);
+	        calendar.set(GregorianCalendar.MINUTE, 0);
+	        start = calendar.getTime();
+	        calendar.add(GregorianCalendar.HOUR_OF_DAY, 8);
+	        end = calendar.getTime();
+	        event = getNewEvent("Pequeña reunion", start, end);
+	        event.setStyleName("color2");
+	        container.addBean(event);
+
+	        calendar.add(GregorianCalendar.DATE, 4);
+	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
+	        calendar.set(GregorianCalendar.MINUTE, 0);
+	        start = calendar.getTime();
+	        calendar.add(GregorianCalendar.HOUR_OF_DAY, 9);
+	        end = calendar.getTime();
+	        event = getNewEvent("Sólo para ver una duda de mi informe", start, end);
+	        container.addBean(event);
+	    }
+		private BasicEvent getNewEvent(String caption, Date start, Date end) {
+			BasicEvent event = new BasicEvent();
+		    event.setCaption(caption);
+		    event.setStart(start);
+		    event.setEnd(end);
+		
+		    return event;
+		}
 
 }
