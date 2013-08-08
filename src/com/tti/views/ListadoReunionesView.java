@@ -22,7 +22,8 @@ public class ListadoReunionesView extends CustomComponent implements View
 	}
 	
 	public ListadoReunionesView() {
-		listadoReuniones = new Table("Histórico de Reuniones", TtiUI.container);
+		listadoReuniones = new Table("Histórico de Reuniones");
+		listadoReuniones.setContainerDataSource(TtiUI.container);
 		panelDeControl = new PanelDeControlAlumno("Karin Acuña");
 		setCompositionRoot(new CssLayout(panelDeControl, listadoReuniones));
 	}

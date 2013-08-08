@@ -16,6 +16,7 @@ import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClick;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.EventClickHandler;
+import com.vaadin.addon.calendar.ui.CalendarComponentEvents.MoveEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectEvent;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.RangeSelectHandler;
 import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClick;
@@ -148,20 +149,6 @@ public class CitaView extends CustomComponent implements View{
 				
 			}
 		});
-		calendario.addEvent(new BasicEvent("Reunión definición TT",
-		        "El objetivo es definir el tema del trabajo de título",
-		        start.getTime(), end.getTime()));
-		start.add(java.util.Calendar.DATE, 2);	
-		start.add(java.util.Calendar.HOUR, 1);
-		end.add(java.util.Calendar.DATE, 2);
-		end.add(java.util.Calendar.HOUR, 2);
-		calendario.addEvent(new BasicEvent("Revisión Avance",
-		        "Primera reunión evaluada",
-		        start.getTime(), end.getTime()));
-//		motor = new MotorProcesos();
-//		motor.makeDeployment();
-//		calendario.setStartDate(new Date());
-//		calendario.setEndDate(new Date());
 		
 		setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
 
@@ -318,82 +305,6 @@ public class CitaView extends CustomComponent implements View{
         }
     }
     
-    private void addInitialEvents() {
-        Date originalDate = calendar.getTime();
-        Date today = new Date();
-        // Add a event that last a whole week
-        Date start = calendario.getFirstDateForWeek(today);
-        Date end = calendario.getLastDateForWeek(today);
-        BasicEvent event = getNewEvent("Evento de Semana completa", start, end);
-        event.setAllDay(true);
-        event.setStyleName("color4");
-        event.setDescription("Este evento tiene una duración que abarca la semana completa.");
-        dataSource.addEvent(event);
-
-        // Add a allday event
-        calendar.setTime(start);
-        calendar.add(GregorianCalendar.DATE, 3);
-        start = calendar.getTime();
-        end = start;
-        event = getNewEvent("Reuniones de Acreditación", start, end);
-        event.setAllDay(true);
-        event.setDescription("Evento de día completo");
-        event.setStyleName("color3");
-        dataSource.addEvent(event);
-
-        // Add a second allday event
-        calendar.add(GregorianCalendar.DATE, 1);
-        start = calendar.getTime();
-        end = start;
-        event = getNewEvent("Día de la ingenieria", start, end);
-        event.setAllDay(true);
-        event.setDescription("Otro evento de día completo.");
-        event.setStyleName("color2");
-        dataSource.addEvent(event);
-
-        calendar.add(GregorianCalendar.DATE, -3);
-        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
-        calendar.set(GregorianCalendar.MINUTE, 30);
-        start = calendar.getTime();
-        calendar.add(GregorianCalendar.HOUR_OF_DAY, 5);
-        calendar.set(GregorianCalendar.MINUTE, 0);
-        end = calendar.getTime();
-        event = getNewEvent("Reunión de Avance", start, end);
-        event.setStyleName("color1");
-        event.setDescription("Quisiera que revisaramos si estoy cumpliendo con los alcances del proyecto.");
-        dataSource.addEvent(event);
-
-        calendar.add(GregorianCalendar.DATE, 1);
-        calendar.set(GregorianCalendar.HOUR_OF_DAY, 11);
-        calendar.set(GregorianCalendar.MINUTE, 0);
-        start = calendar.getTime();
-        calendar.add(GregorianCalendar.HOUR_OF_DAY, 8);
-        end = calendar.getTime();
-        event = getNewEvent("Pequeña reunion", start, end);
-        event.setStyleName("color2");
-        dataSource.addEvent(event);
-
-        calendar.add(GregorianCalendar.DATE, 4);
-        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
-        calendar.set(GregorianCalendar.MINUTE, 0);
-        start = calendar.getTime();
-        calendar.add(GregorianCalendar.HOUR_OF_DAY, 9);
-        end = calendar.getTime();
-        event = getNewEvent("Sólo para ver una duda de mi informe", start, end);
-        dataSource.addEvent(event);
-
-        calendar.setTime(originalDate);
-    }
-    private BasicEvent getNewEvent(String caption, Date start, Date end) {
-    	BasicEvent event = new BasicEvent();
-        event.setCaption(caption);
-        event.setStart(start);
-        event.setEnd(end);
-
-        return event;
-    }
- 
-    
     private void creaPopupCita(BasicEvent e){
 		 cita = new CitaWindow();
 		 cita.setFechaDesde(e.getStart());
@@ -426,6 +337,7 @@ public class CitaView extends CustomComponent implements View{
 				miCita.setAllDay(cita.getDiaCompleto());
 				if(cita.AGENDAR){
 					TtiUI.container.addBean(miCita);
+					TtiUI.container.sort(new Object[]{"start"}, new boolean[]{true});
 				}else if(cita.ELIMINAR){
 					TtiUI.container.removeItem(miCita);
 				}

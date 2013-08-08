@@ -100,6 +100,7 @@ public class TtiUI extends UI {
 	        event.setStyleName("color4");
 	        event.setDescription("Este evento tiene una duración que abarca la semana completa.");
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 
 	        // Add a allday event
 	        calendar.setTime(start);
@@ -111,6 +112,7 @@ public class TtiUI extends UI {
 	        event.setDescription("Evento de día completo");
 	        event.setStyleName("color3");
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 
 	        // Add a second allday event
 	        calendar.add(GregorianCalendar.DATE, 1);
@@ -121,6 +123,7 @@ public class TtiUI extends UI {
 	        event.setDescription("Otro evento de día completo.");
 	        event.setStyleName("color2");
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 
 	        calendar.add(GregorianCalendar.DATE, -3);
 	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
@@ -133,6 +136,7 @@ public class TtiUI extends UI {
 	        event.setStyleName("color1");
 	        event.setDescription("Quisiera que revisaramos si estoy cumpliendo con los alcances del proyecto.");
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 
 	        calendar.add(GregorianCalendar.DATE, 1);
 	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 11);
@@ -143,6 +147,7 @@ public class TtiUI extends UI {
 	        event = getNewEvent("Pequeña reunion", start, end);
 	        event.setStyleName("color2");
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 
 	        calendar.add(GregorianCalendar.DATE, 4);
 	        calendar.set(GregorianCalendar.HOUR_OF_DAY, 9);
@@ -152,6 +157,7 @@ public class TtiUI extends UI {
 	        end = calendar.getTime();
 	        event = getNewEvent("Sólo para ver una duda de mi informe", start, end);
 	        container.addBean(event);
+	        container.sort(new Object[]{"start"}, new boolean[]{true});
 	    }
 		private BasicEvent getNewEvent(String caption, Date start, Date end) {
 			BasicEvent event = new BasicEvent();
