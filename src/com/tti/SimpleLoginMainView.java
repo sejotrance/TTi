@@ -14,11 +14,11 @@ import com.vaadin.ui.Notification;
 public class SimpleLoginMainView extends CustomComponent implements View {
 
     public static final String NAME = "";
-    public String username;
+    public static String username;
     public PanelDeControlAlumno panelDeControl;
     
     public SimpleLoginMainView() throws FileNotFoundException {
-    	panelDeControl = new PanelDeControlAlumno("Karin Acuña");
+    	panelDeControl = new PanelDeControlAlumno("KarinAcuña");
         setCompositionRoot(new CssLayout(panelDeControl));
     }
 
