@@ -8,6 +8,7 @@ import com.tti.views.CitaView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.ReprogramarView;
+import com.tti.views.SubirInformeView;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
@@ -17,16 +18,14 @@ import com.vaadin.ui.MenuBar.MenuItem;
 
 @SuppressWarnings("serial")
 public class PanelDeControlAlumno extends CustomComponent{
-public PanelDeControlAlumno() {
-	// TODO Auto-generated constructor stub
-}
+	
 	public static final String NAME = "panelDeControl";
     private MenuBar menubar = new MenuBar();
-//    private String username;
+    private String username;
     
     @SuppressWarnings("unused")
 	public PanelDeControlAlumno(String username) {
-//    	username = "ASDAS";
+    	this.username = username;
         // Save reference to individual items so we can add sub-menu items to
         // them
     	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
@@ -42,7 +41,7 @@ public PanelDeControlAlumno() {
         avance.addItem("Revisar Mi Avance", miAvance);
         avance.addSeparator();
 
-        avance.addItem("Actualizar mi Informe", menuCommand);
+        avance.addItem("Actualizar mi Informe", subirInforme);
 
         final MenuBar.MenuItem profesorGuia = menubar.addItem("Profesor Guía", null);
         profesorGuia.addItem("Perfil", menuCommand);
@@ -51,7 +50,7 @@ public PanelDeControlAlumno() {
 
         profesorGuia.addItem("Cambio Profesor", menuCommand);
         
-        final MenuBar.MenuItem perfil = menubar.addItem(username, null);
+        final MenuBar.MenuItem perfil = menubar.addItem(this.username, null);
         perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
         perfil.addItem("Editar Perfil", goProfile);
         perfil.addSeparator();
@@ -109,6 +108,12 @@ public PanelDeControlAlumno() {
     private Command verListado = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(ListadoReunionesView.NAME);
+        }
+    };
+    
+    private Command subirInforme = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(SubirInformeView.NAME);
         }
     };
     

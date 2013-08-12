@@ -8,8 +8,10 @@ import com.tti.views.CitaView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.ReprogramarView;
+import com.tti.views.SubirInformeView;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.ui.Calendar;
+import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -19,6 +21,7 @@ import com.vaadin.ui.UI;
 /**
  * Main UI class
  */
+@Theme("bootstrap")
 @SuppressWarnings("serial")
 public class TtiUI extends UI {
 	private Calendar calendario;
@@ -54,6 +57,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(ReprogramarView.NAME, ReprogramarView.class);
 	        getNavigator().addView(AvanceView.NAME, AvanceView.class);
 	        getNavigator().addView(ListadoReunionesView.NAME, ListadoReunionesView.class);
+	        getNavigator().addView(SubirInformeView.NAME, SubirInformeView.class);
 	                       
 	        //
 	        // We use a view change handler to ensure the user is always redirected
