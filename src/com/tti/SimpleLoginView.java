@@ -2,6 +2,7 @@ package com.tti;
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
@@ -47,6 +48,7 @@ password.setNullRepresentation("");
 
 // Create login button
 loginButton = new Button("Login", this);
+loginButton.setClickShortcut(KeyCode.ENTER);
 
 // Add both to a panel
 VerticalLayout fields = new VerticalLayout(user, password, loginButton);
