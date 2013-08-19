@@ -1,3 +1,80 @@
 @import "../reindeer/legacy-styles.css";
 
 @import "../bootstrap/css/bootstrap.min.css";
+
+body { padding-top: 70px; }
+.v-menubar {width:100%; 
+			height:100%;
+			background-image:none !important;
+			background: none !important;
+			}
+			
+.v-menubar .v-menubar-menuitem {
+	padding: 3px 8px;
+	height: 100%;
+	line-height: 27px;
+	}
+	
+	.v-menubar-submenu .v-menubar-menuitem {
+	line-height: 30px;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-selected {
+background: #4d749f repeat-x;
+background-image: none !important;
+color: #fff;
+text-shadow: 0 1px 0 #3b5a7a;
+}
+
+.v-menubar .v-menubar-menuitem-selected, .v-menubar-submenu .v-menubar-menuitem-selected {
+background: #4d749f repeat-x;
+background-image: none !important;
+background-position: left -731px;
+color: #fff;
+text-shadow: 0 1px 0 #3b5a7a;
+}
+
+
+
+.v-app{
+font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 15px;
+}
+
+.v-widget {
+text-align: left;
+white-space: normal;
+font-size: 14px;
+line-height: 1.428;
+}
+
+.v-caption {
+white-space: nowrap;
+font-size: 14px;
+}
+
+.v-table-table {
+font-size: 14px;
+}
+
+.v-table-header-wrap, .white .v-table-header-wrap, .v-table-footer-wrap, .white .v-table-footer-wrap, .v-table-header-drag {
+text-transform: uppercase;
+font-size: 14px;
+font-weight: bold;
+color: #222;
+text-shadow: #f3f5f8 0 1px 0;
+line-height: normal;
+}
+
+.v-menubar .v-menubar-menuitem {
+line-height: 3.428;
+}
+
+.v-calendar-time {
+padding: 0 8px 7px 0;
+margin-top: -2px;
+text-align: right;
+font-size: 14px;
+color: #666;
+border-right: 1px solid #ccc;
+}

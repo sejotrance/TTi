@@ -6,9 +6,11 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -21,6 +23,8 @@ Button.ClickListener {
 
 public static final String NAME = "login";
 
+private final Label texto;
+
 private final TextField user;
 
 private final PasswordField password;
@@ -30,29 +34,33 @@ private final Button loginButton;
 public SimpleLoginView() {
 setSizeFull();
 
+texto = new Label("<div class=\"well\">Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)</div>",ContentMode.HTML);
+
 // Create the user input field
-user = new TextField("User:");
+user = new TextField("Usuario:");
 user.setWidth("300px");
 user.setRequired(true);
 user.setInputPrompt("Tu nombre de usuario (ej. usuario@email.com)");
 user.addValidator(new EmailValidator("El nombre de usuario debe ser una dirección email"));
 user.setInvalidAllowed(false);
+user.setStyleName("form-control");
 
 // Create the password input field
-password = new PasswordField("Password:");
+password = new PasswordField("Contraseña:");
 password.setWidth("300px");
 password.addValidator(new PasswordValidator());
 password.setRequired(true);
 password.setValue("");
 password.setNullRepresentation("");
+password.setStyleName("form-control");
 
 // Create login button
 loginButton = new Button("Login", this);
 loginButton.setClickShortcut(KeyCode.ENTER);
-
 // Add both to a panel
-VerticalLayout fields = new VerticalLayout(user, password, loginButton);
-fields.setCaption("Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)");
+VerticalLayout fields = new VerticalLayout(texto, user, password, loginButton);
+fields.addStyleName("input-group");
+//fields.setCaption("Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)");
 fields.setSpacing(true);
 fields.setMargin(new MarginInfo(true, true, true, false));
 fields.setSizeUndefined();
