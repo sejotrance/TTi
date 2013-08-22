@@ -9,6 +9,7 @@ import com.processEngine.MotorProcesos;
 import com.tti.componentes.PanelDeControlAlumno;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
@@ -43,6 +44,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
         // Get the user name from the session
         username = String.valueOf(getSession().getAttribute("user"));
         Notification.show(username);
+        new Notification("Caption", "Description", Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
         
     }
 }
