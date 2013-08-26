@@ -6,7 +6,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import com.processEngine.MotorProcesos;
-import com.tti.componentes.PanelDeControlAlumno;
+import com.tti.componentes.PanelDeControl;
+import com.tti.enums.Rol;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
@@ -21,7 +22,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
 
     public static final String NAME = "";
     public static String username;
-    public PanelDeControlAlumno panelDeControl;
+    public PanelDeControl panelDeControl;
     private static Label textoHoy;
     private static Label diasFin;
     private static Label fechaFinSemestre;
@@ -35,7 +36,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     	textoHoy = new Label("<p>Fecha de Hoy: " + dia + " de " + mes + " de " + anno + "</p>", ContentMode.HTML);
     	diasFin = new Label("<p>Faltan 30 Dias para el termino del Segundo Semestre de 2013</p>", ContentMode.HTML);
     	fechaFinSemestre = new Label("<p>El semestre termina el 20 de Septiembre de 2013</p>", ContentMode.HTML);
-    	panelDeControl = new PanelDeControlAlumno("KarinAcuña");
+    	panelDeControl = new PanelDeControl("Username");
         setCompositionRoot(new CssLayout(panelDeControl, textoHoy, diasFin, fechaFinSemestre));
     }
 
@@ -43,8 +44,10 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     public void enter(ViewChangeEvent event) {
         // Get the user name from the session
         username = String.valueOf(getSession().getAttribute("user"));
+        panelDeControl = new PanelDeControl(username,getSession().getAttribute(Rol.class));
+        setCompositionRoot(new CssLayout(panelDeControl, textoHoy, diasFin, fechaFinSemestre));
         Notification.show(username);
-        new Notification("Caption", "Description", Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
+        new Notification("Caption", String.valueOf(getSession().getAttribute("rol")), Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
         
     }
 }

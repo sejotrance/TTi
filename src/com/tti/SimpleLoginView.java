@@ -136,6 +136,7 @@ Button.ClickListener {
 		if(isValid){
 		    // Store the current user in the service session
 		    getSession().setAttribute("user", username);
+		    getSession().setAttribute(Rol.class, usuario.getRolUsuario());
 		
 		    // Navigate to main view
 		    getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);
@@ -166,7 +167,7 @@ Button.ClickListener {
 			usuario = new Usuario(username, password, Rol.DIRECTOR_DEPARTAMENTO); 
 			return true;
 		//FUNCIONARIO
-		}else if(username.equals("funcionario@utem.cl") && password.equals("passw0rd")){
+		}else if(username.equals("secretaria@utem.cl") && password.equals("passw0rd")){
 			usuario = new Usuario(username, password, Rol.FUNCIONARIO); 
 			return true;
 		//ADMINISTRADOR

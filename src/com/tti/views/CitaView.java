@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import com.tti.TtiUI;
-import com.tti.componentes.PanelDeControlAlumno;
+import com.tti.componentes.PanelDeControl;
 import com.tti.windows.CitaWindow;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
@@ -54,11 +54,11 @@ public class CitaView extends CustomComponent implements View{
 	public Button botonSig = new Button("Siguiente");
 	public Button botonPrev = new Button("Atrás");
 	public Button nuevaReunion = new Button("Nueva reunión");
-	private PanelDeControlAlumno panelDeControl;
+	private PanelDeControl panelDeControl;
 	private Date currentMonthsFirstDate;
 	
 	public CitaView() throws FileNotFoundException {
-		panelDeControl = new PanelDeControlAlumno("Karin Acuña");
+		panelDeControl = new PanelDeControl("username");
 		viewMode = Mode.WEEK;
 		
 		botonMes.addClickListener(new Button.ClickListener() {
@@ -162,9 +162,8 @@ public class CitaView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-		
-		
+		panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")));		
+		setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
 	}
 	
 	private void setVistaMes(){
