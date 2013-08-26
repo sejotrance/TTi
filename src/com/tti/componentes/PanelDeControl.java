@@ -8,6 +8,7 @@ import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
+import com.tti.views.RegistroAlumnoView;
 import com.tti.views.ReprogramarView;
 import com.tti.views.SubirInformeView;
 import com.vaadin.server.ThemeResource;
@@ -182,7 +183,7 @@ public class PanelDeControl extends CustomComponent{
        // them
    	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
        final MenuBar.MenuItem alumno = menubar.addItem("Alumno", null);
-       final MenuBar.MenuItem agendar = alumno.addItem("Registrar", agendarCita);
+       final MenuBar.MenuItem registrar = alumno.addItem("Registrar", registrarAlumno);
 
        inicio.setStyleName("h1");
        alumno.addItem("Actualizar", reprogramar);
@@ -277,6 +278,12 @@ public class PanelDeControl extends CustomComponent{
     private Command subirInforme = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(SubirInformeView.NAME);
+        }
+    };
+    
+    private Command registrarAlumno = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(RegistroAlumnoView.NAME);
         }
     };
     

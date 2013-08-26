@@ -47,7 +47,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
         panelDeControl = new PanelDeControl(username,getSession().getAttribute(Rol.class));
         setCompositionRoot(new CssLayout(panelDeControl, textoHoy, diasFin, fechaFinSemestre));
         Notification.show(username);
-        new Notification("Caption", String.valueOf(getSession().getAttribute("rol")), Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
+//        new Notification("Caption", String.valueOf(getSession().getAttribute("rol")), Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
         
     }
 }
