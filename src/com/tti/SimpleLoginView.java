@@ -163,10 +163,14 @@ Button.ClickListener {
 			usuario = new Usuario(username, password, Rol.JEFE_CARRERA);
 			return true;
 		//DIRECTOR DE DEPARTAMENTO
+		}else if(username.equals("de@utem.cl") && password.equals("passw0rd")){
+			usuario = new Usuario(username, password, Rol.DIRECTOR_ESCUELA);
+			return true;
+		//DIRECTOR DE DEPARTAMENTO
 		}else if(username.equals("dp@utem.cl") && password.equals("passw0rd")){
 			usuario = new Usuario(username, password, Rol.DIRECTOR_DEPARTAMENTO); 
 			return true;
-		//FUNCIONARIO
+		//SECRETARIA
 		}else if(username.equals("secretaria@utem.cl") && password.equals("passw0rd")){
 			usuario = new Usuario(username, password, Rol.SECRETARIA); 
 			return true;

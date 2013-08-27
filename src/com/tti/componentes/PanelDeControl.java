@@ -46,11 +46,11 @@ public class PanelDeControl extends CustomComponent{
     	mensaje = new Button("Nuevo Mensaje");
     	switch (userRol) {
 			case ADMINISTRADOR:
-				
 				break;
 			case DIRECTOR_DEPARTAMENTO:
-						
-						break;
+				break;
+			case DIRECTOR_ESCUELA:
+				break;
 			case ALUMNO:
 		    	setPanelAlumno();
 				break;
@@ -58,7 +58,6 @@ public class PanelDeControl extends CustomComponent{
 				setPanelSecretaria();
 				break;
 			case JEFE_CARRERA:
-				
 				break;
 			case PROFESOR:
 				setPanelProfesor();
