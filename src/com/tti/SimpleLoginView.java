@@ -168,7 +168,7 @@ Button.ClickListener {
 			return true;
 		//FUNCIONARIO
 		}else if(username.equals("secretaria@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.FUNCIONARIO); 
+			usuario = new Usuario(username, password, Rol.SECRETARIA); 
 			return true;
 		//ADMINISTRADOR
 		}else if(username.equals("administrador@utem.cl") && password.equals("passw0rd")){

@@ -17,7 +17,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.mortbay.log.Log;
 
 import com.vaadin.ui.Label;
 

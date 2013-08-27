@@ -54,7 +54,7 @@ public class PanelDeControl extends CustomComponent{
 			case ALUMNO:
 		    	setPanelAlumno();
 				break;
-			case FUNCIONARIO:
+			case SECRETARIA:
 				setPanelSecretaria();
 				break;
 			case JEFE_CARRERA:
