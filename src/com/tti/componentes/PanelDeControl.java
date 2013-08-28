@@ -6,6 +6,7 @@ import com.tti.SimpleLoginView;
 import com.tti.enums.Rol;
 import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
+import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.RegistroAlumnoView;
@@ -83,7 +84,7 @@ public class PanelDeControl extends CustomComponent{
         reunion.addItem("Reprogramar", reprogramar);
         reunion.addSeparator();
 
-        reunion.addItem("Ver Listado", verListado);
+        reunion.addItem("Ver Listado", verListadoAlumnoCommand);
 
         final MenuBar.MenuItem avance = menubar.addItem("Mi Avance", null);
         avance.addItem("Revisar Mi Avance", miAvance);
@@ -188,7 +189,7 @@ public class PanelDeControl extends CustomComponent{
        alumno.addItem("Actualizar", reprogramar);
        alumno.addSeparator();
 
-       alumno.addItem("Ver Listado", verListado);
+       alumno.addItem("Ver Listado", verListadoAlumnoCommand);
 
        final MenuBar.MenuItem avance = menubar.addItem("Docente", null);
        avance.addItem("Registrar", miAvance);
@@ -283,6 +284,12 @@ public class PanelDeControl extends CustomComponent{
     private Command registrarAlumno = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(RegistroAlumnoView.NAME);
+        }
+    };
+    
+    private Command verListadoAlumnoCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(ListadoAlumnosView.NAME);
         }
     };
     

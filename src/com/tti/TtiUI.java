@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
+import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.RegistroAlumnoView;
@@ -60,6 +61,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(ListadoReunionesView.NAME, ListadoReunionesView.class);
 	        getNavigator().addView(SubirInformeView.NAME, SubirInformeView.class);
 	        getNavigator().addView(RegistroAlumnoView.NAME, RegistroAlumnoView.class);
+	        getNavigator().addView(ListadoAlumnosView.NAME, ListadoAlumnosView.class);
 	                       
 	        //
 	        // We use a view change handler to ensure the user is always redirected
