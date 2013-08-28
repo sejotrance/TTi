@@ -84,7 +84,7 @@ public class PanelDeControl extends CustomComponent{
         reunion.addItem("Reprogramar", reprogramar);
         reunion.addSeparator();
 
-        reunion.addItem("Ver Listado", verListadoAlumnoCommand);
+        reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
 
         final MenuBar.MenuItem avance = menubar.addItem("Mi Avance", null);
         avance.addItem("Revisar Mi Avance", miAvance);
@@ -139,7 +139,7 @@ public class PanelDeControl extends CustomComponent{
         reunion.addItem("Reprogramar", reprogramar);
         reunion.addSeparator();
 
-        reunion.addItem("Ver Listado", verListado);
+        reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
 
         final MenuBar.MenuItem avance = menubar.addItem("Mis Alumnos", null);
         avance.addItem("Revisar Avance", miAvance);
@@ -269,7 +269,7 @@ public class PanelDeControl extends CustomComponent{
         }
     };
     
-    private Command verListado = new Command() {
+    private Command verListadoReuAlumnoCommand = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(ListadoReunionesView.NAME);
         }

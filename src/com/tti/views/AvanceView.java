@@ -1,6 +1,8 @@
 package com.tti.views;
 
 import com.tti.componentes.PanelDeControl;
+import com.tti.componentes.SinPermisoComponent;
+import com.tti.enums.Rol;
 import com.tti.reportes.AvanceChart;
 import com.vaadin.client.ui.customcomponent.CustomComponentConnector;
 import com.vaadin.navigator.View;
@@ -15,8 +17,15 @@ public class AvanceView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")));
-		setCompositionRoot(new CssLayout(panelDeControl, avanceChart));
+		Rol userRol = getSession().getAttribute(Rol.class);
+		if(userRol == Rol.ALUMNO){		
+			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
+			setCompositionRoot(new CssLayout(panelDeControl, avanceChart));
+		}else{
+			//Mostrar que no tiene los permisos
+			SinPermisoComponent sinPermiso = new SinPermisoComponent();
+		    setCompositionRoot(new CssLayout(sinPermiso));
+		}
 		
 	}public AvanceView() {
 		panelDeControl = new PanelDeControl("username");

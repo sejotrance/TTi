@@ -8,6 +8,8 @@ import java.util.Locale;
 
 import com.tti.TtiUI;
 import com.tti.componentes.PanelDeControl;
+import com.tti.componentes.SinPermisoComponent;
+import com.tti.enums.Rol;
 import com.tti.windows.CitaWindow;
 import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.addon.calendar.event.BasicEventProvider;
@@ -162,8 +164,15 @@ public class CitaView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")));		
-		setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
+		Rol userRol = getSession().getAttribute(Rol.class);
+		if(userRol == Rol.ALUMNO){		
+			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
+			setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
+		}else{
+			//Mostrar que no tiene los permisos
+			SinPermisoComponent sinPermiso = new SinPermisoComponent();
+		    setCompositionRoot(new CssLayout(sinPermiso));
+		}	
 	}
 	
 	private void setVistaMes(){
