@@ -3,9 +3,11 @@ package com.tti;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.tti.views.AvanceAlumnosView;
 import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoAlumnosView;
+import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.RegistroAlumnoView;
@@ -62,6 +64,8 @@ public class TtiUI extends UI {
 	        getNavigator().addView(SubirInformeView.NAME, SubirInformeView.class);
 	        getNavigator().addView(RegistroAlumnoView.NAME, RegistroAlumnoView.class);
 	        getNavigator().addView(ListadoAlumnosView.NAME, ListadoAlumnosView.class);
+	        getNavigator().addView(ListadoProfesoresView.NAME, ListadoProfesoresView.class);
+	        getNavigator().addView(AvanceAlumnosView.NAME, AvanceAlumnosView.class);
 	                       
 	        //
 	        // We use a view change handler to ensure the user is always redirected

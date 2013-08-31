@@ -4,9 +4,11 @@ package com.tti.componentes;
 import com.tti.SimpleLoginMainView;
 import com.tti.SimpleLoginView;
 import com.tti.enums.Rol;
+import com.tti.views.AvanceAlumnosView;
 import com.tti.views.AvanceView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoAlumnosView;
+import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.RegistroAlumnoView;
@@ -141,11 +143,11 @@ public class PanelDeControl extends CustomComponent{
 
         reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
 
-        final MenuBar.MenuItem avance = menubar.addItem("Mis Alumnos", null);
-        avance.addItem("Revisar Avance", miAvance);
-        avance.addSeparator();
+        final MenuBar.MenuItem alumnos = menubar.addItem("Mis Alumnos", null);
+        alumnos.addItem("Revisar Avance", avanceAlumnosCommand);
+        alumnos.addSeparator();
 
-        avance.addItem("Revisar Informe", subirInforme);
+        alumnos.addItem("Revisar Informe", subirInforme);
         
               
         final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
@@ -191,11 +193,11 @@ public class PanelDeControl extends CustomComponent{
 
        alumno.addItem("Ver Listado", verListadoAlumnoCommand);
 
-       final MenuBar.MenuItem avance = menubar.addItem("Docente", null);
-       avance.addItem("Registrar", miAvance);
-       avance.addSeparator();
+       final MenuBar.MenuItem docente = menubar.addItem("Docente", null);
+       docente.addItem("Registrar", miAvance);
+       docente.addSeparator();
 
-       avance.addItem("Ver Listado", subirInforme);
+       docente.addItem("Ver Listado", verListadoProfesorCommand);
        
        final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
        perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
@@ -293,7 +295,18 @@ public class PanelDeControl extends CustomComponent{
         }
     };
     
-
+    private Command verListadoProfesorCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(ListadoProfesoresView.NAME);
+        }
+    };
+    
+    private Command avanceAlumnosCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(AvanceAlumnosView.NAME);
+        }
+    };
+    
 
 	
 

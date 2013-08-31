@@ -101,7 +101,7 @@ public class GestorUsuariosComponent extends CustomComponent{
 		 * set a caption that would be shown above the field or description to
 		 * be shown in a tooltip.
 		 */
-		searchField.setInputPrompt("Search contacts");
+		searchField.setInputPrompt("Buscar");
 
 		/*
 		 * Granularity for sending events over the wire can be controlled. By
@@ -169,9 +169,9 @@ public class GestorUsuariosComponent extends CustomComponent{
 				 * set a couple of those.
 				 */
 				contactList.getContainerProperty(contactId, NOMBRE).setValue(
-						"New");
+						"Nuevo");
 				contactList.getContainerProperty(contactId, APELLIDO).setValue(
-						"Contact");
+						"Elemento");
 
 				/* Lets choose the newly created contact to edit it. */
 				contactList.select(contactId);

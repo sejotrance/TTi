@@ -7,10 +7,12 @@ import com.tti.enums.Rol;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Button.ClickEvent;
 
 public class RegistroAlumnoView extends CustomComponent implements View{
 	
@@ -26,6 +28,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 	private PanelDeControl panelDeControl;
 	private FormLayout editorLayout = new FormLayout();
 	private FieldGroup camposAlumno = new FieldGroup();
+	private Button botonGuardar;
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -33,7 +36,17 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		if(userRol == Rol.SECRETARIA){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			initEditor();
-			setCompositionRoot(new CssLayout(panelDeControl, editorLayout));
+			botonGuardar = new Button("Registrar Alumno", new Button.ClickListener() {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			setCompositionRoot(new CssLayout(panelDeControl, editorLayout, botonGuardar));
 		}else{
 			//Mostrar que no tiene los permisos
 			SinPermisoComponent sinPermiso = new SinPermisoComponent();
