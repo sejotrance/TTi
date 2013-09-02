@@ -1,6 +1,5 @@
 package com.tti.views;
 
-import com.tti.SimpleLoginMainView;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
@@ -16,23 +15,21 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class RegistroAlumnoView extends CustomComponent implements View{
+public class RegistroProfesorView extends CustomComponent implements View{
 	
 	private static final long serialVersionUID = -8559029417440049381L;
-	public static final String NAME = "RegistrarAlumno";
+	public static final String NAME = "RegistrarProfesor";
 	private static final String RUN = "RUN";
 	private static final String NOMBRE = "Nombre";
     private static final String APELLIDO = "Apellido";
-    private static final String CARRERA = "Carrera";
 	private static final String[] nombreCampo = new String[] {RUN, NOMBRE, APELLIDO,
-        CARRERA, "Email", "Teléfono", "Fecha de Nacimiento", "Dirección",
-        "Comuna", "Región"};
-	
+												"Email", "Teléfono", "Fecha de Nacimiento", "Dirección",
+												"Comuna", "Región"};
 	private PanelDeControl panelDeControl;
-	private static final Label descripcion = new Label("<h2> Registrar un nuevo Alumno </h2>" + 
-			"<p> Ingrese los datos en el formulario y presione el botón Registrar para guardar los cambios. </p>", ContentMode.HTML);
+	private static final Label descripcion = new Label("<h2> Registrar un nuevo Profesor </h2>" + 
+														"<p> Ingrese los datos en el formulario y presione el botón Registrar para guardar los cambios. </p>", ContentMode.HTML);
 	private FormLayout editorLayout = new FormLayout();
-	private FieldGroup camposAlumno = new FieldGroup();
+	private FieldGroup camposProfesor = new FieldGroup();
 	private Button botonGuardar;
 	
 	@Override
@@ -41,7 +38,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		if(userRol == Rol.SECRETARIA){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			initEditor();
-			botonGuardar = new Button("Registrar Alumno", new Button.ClickListener() {
+			botonGuardar = new Button("Registrar Profesor", new Button.ClickListener() {
 
 				private static final long serialVersionUID = 1L;
 
@@ -66,11 +63,11 @@ public class RegistroAlumnoView extends CustomComponent implements View{
                   editorLayout.addComponent(field);
                   field.setWidth("100%");
 
-                  camposAlumno.bind(field, fieldName);
+                  camposProfesor.bind(field, fieldName);
           }
 //          editorLayout.addComponent(removeContactButton);
 
-          camposAlumno.setBuffered(false);
+          camposProfesor.setBuffered(false);
   }
 
 }

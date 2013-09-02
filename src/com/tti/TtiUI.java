@@ -11,6 +11,7 @@ import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
 import com.tti.views.RegistroAlumnoView;
+import com.tti.views.RegistroProfesorView;
 import com.tti.views.ReprogramarView;
 import com.tti.views.SubirInformeView;
 import com.vaadin.addon.calendar.event.BasicEvent;
@@ -66,7 +67,8 @@ public class TtiUI extends UI {
 	        getNavigator().addView(ListadoAlumnosView.NAME, ListadoAlumnosView.class);
 	        getNavigator().addView(ListadoProfesoresView.NAME, ListadoProfesoresView.class);
 	        getNavigator().addView(AvanceAlumnosView.NAME, AvanceAlumnosView.class);
-	                       
+	        getNavigator().addView(RegistroProfesorView.NAME, RegistroProfesorView.class);
+	        
 	        //
 	        // We use a view change handler to ensure the user is always redirected
 	        // to the login view if the user is not logged in.

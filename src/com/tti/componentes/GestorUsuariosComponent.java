@@ -33,6 +33,7 @@ public class GestorUsuariosComponent extends CustomComponent{
     private static String[] fieldNames;
     private IndexedContainer personaContainer;
     
+    private static final String RUN = "RUN";
     private static final String NOMBRE = "Nombre";
     private static final String APELLIDO = "Apellido";
     private static final String EMAIL = "Email";
@@ -142,7 +143,8 @@ public class GestorUsuariosComponent extends CustomComponent{
 		}
 
 		public boolean passesFilter(Object itemId, Item item) {
-			String haystack = ("" + item.getItemProperty(NOMBRE).getValue()
+			String haystack = ("" + item.getItemProperty(RUN).getValue() 
+					+ item.getItemProperty(NOMBRE).getValue()
 					+ item.getItemProperty(APELLIDO).getValue() + item
 					.getItemProperty(EMAIL).getValue()).toLowerCase();
 			return haystack.contains(needle);
@@ -168,6 +170,8 @@ public class GestorUsuariosComponent extends CustomComponent{
 				 * Each Item has a set of Properties that hold values. Here we
 				 * set a couple of those.
 				 */
+				contactList.getContainerProperty(contactId, RUN).setValue(
+						"Ingrese un RUN válido");
 				contactList.getContainerProperty(contactId, NOMBRE).setValue(
 						"Nuevo");
 				contactList.getContainerProperty(contactId, APELLIDO).setValue(
@@ -219,7 +223,7 @@ public class GestorUsuariosComponent extends CustomComponent{
 	
 	private void initContactList() {
 		contactList.setContainerDataSource(personaContainer);
-		contactList.setVisibleColumns(new String[] { NOMBRE, APELLIDO, EMAIL });
+		contactList.setVisibleColumns(new String[] { RUN, NOMBRE, APELLIDO, EMAIL });
 		contactList.setSelectable(true);
 		contactList.setImmediate(true);
 

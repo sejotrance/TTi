@@ -76,5 +76,4 @@ public class AvanceAlumnosView extends CustomComponent implements View{
 
 	        return chart;
 	    }
-
 }
