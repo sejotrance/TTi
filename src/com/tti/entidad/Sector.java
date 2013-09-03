@@ -1,6 +1,6 @@
-package com.tti.data;
+package com.tti.entidad;
 
-public class Region {
+public class Sector {
 	
 	private String codigo;
 	private String tipo;
@@ -10,7 +10,7 @@ public class Region {
 	private String url;
 	private String codigo_padre;
 	
-	public Region(String codigo, String tipo, String nombre, String lat, String lng, String url, String codigo_padre){
+	public Sector(String codigo, String tipo, String nombre, String lat, String lng, String url, String codigo_padre){
 		this.codigo = codigo;
 		this.tipo = tipo;
 		this.nombre = nombre;
@@ -20,7 +20,7 @@ public class Region {
 		this.codigo_padre = codigo_padre;
 	}
 	
-	public Region() {
+	public Sector() {
 		this.codigo = "";
 		this.tipo = "";
 		this.nombre = "";

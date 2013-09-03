@@ -1,11 +1,11 @@
 package com.tti.test;
 
-import com.tti.data.Region;
-import com.tti.enums.Regiones;
+import com.tti.data.ApiDPA;
+import com.tti.entidad.Sector;
 
 public class probarClase {
-	private static Regiones regiones;
+	private static ApiDPA regiones;
 	public static void main(String[] args) {
-		regiones = new Regiones();
+		regiones = new ApiDPA();
 	}
 }
