@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.type.ArrayType;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tti.entidad.Sector;
@@ -30,7 +28,7 @@ public class ApiDPA {
 	 	}
 		List<Sector> regiones = new ArrayList<Sector>(); 
 		try {	
-			//Listado de las regiones o en el caso de venir vacía Representación de una única Región
+			//Listado de las regiones, o en el caso de venir vacía Representación de una única Región
 				URL url = new URL("http://apis.modernizacion.cl/dpa/regiones/" + codRegion);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.setRequestMethod("GET");
