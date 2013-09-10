@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.tti.data.ApiDPA;
 import com.tti.entidad.Sector;
+import com.vaadin.data.Container.PropertySetChangeListener;
 import com.vaadin.data.Item;
+import com.vaadin.data.Container.PropertySetChangeEvent;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
@@ -21,8 +23,8 @@ public class RegionProvinciaComunaComponent extends CustomComponent{
 	private static final long serialVersionUID = -7034670941893640320L;
 	private static ApiDPA apiDpaConnection;
 	private NativeSelect comboRegion;
-	private ComboBox comboProvincia;
-	private ComboBox comboComuna;
+	private NativeSelect comboProvincia;
+	private NativeSelect comboComuna;
 	private HorizontalLayout horizontalLayout;
 	private VerticalLayout verticalLayout;
 	
@@ -33,8 +35,8 @@ public class RegionProvinciaComunaComponent extends CustomComponent{
 	
 	private void initLayout(boolean horizontal){
 		comboRegion = new NativeSelect("Región");
-		comboProvincia = new ComboBox("Provincia");
-		comboComuna = new ComboBox("Comuna");
+		comboProvincia = new NativeSelect("Provincia");
+		comboComuna = new NativeSelect("Comuna");
 		
 		if(horizontal){
 			horizontalLayout = new HorizontalLayout(comboRegion, comboProvincia, comboComuna);
@@ -73,12 +75,11 @@ public class RegionProvinciaComunaComponent extends CustomComponent{
 	
 	private void setListeners(){
 		
-		comboRegion.addValueChangeListener(new ValueChangeListener() {
+		comboRegion.addPropertySetChangeListener(new PropertySetChangeListener() {
 			
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				System.out.println("Valor: " + event.getProperty().getValue());
-				Notification.show("Valor: " + event.getProperty().getValue());
+			public void containerPropertySetChange(PropertySetChangeEvent event) {
+				Notification.show("Cambio");
 				
 			}
 		});

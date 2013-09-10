@@ -6,6 +6,7 @@ import com.tti.SimpleLoginView;
 import com.tti.enums.Rol;
 import com.tti.views.AvanceAlumnosView;
 import com.tti.views.AvanceView;
+import com.tti.views.CalificacionAlumnoView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoProfesoresView;
@@ -149,6 +150,7 @@ public class PanelDeControl extends CustomComponent{
         alumnos.addSeparator();
 
         alumnos.addItem("Revisar Informe", subirInforme);
+        alumnos.addItem("Calificar", calificarAlumnosCommand);
         
               
         final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
@@ -311,6 +313,12 @@ public class PanelDeControl extends CustomComponent{
     private Command registrarProfesorCommand = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(RegistroProfesorView.NAME);
+        }
+    };
+    
+    private Command calificarAlumnosCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(CalificacionAlumnoView.NAME);
         }
     };
     
