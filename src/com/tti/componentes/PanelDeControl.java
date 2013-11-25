@@ -6,6 +6,7 @@ import com.tti.SimpleLoginView;
 import com.tti.enums.Rol;
 import com.tti.views.AvanceAlumnosView;
 import com.tti.views.AvanceView;
+import com.tti.views.BitacoraView;
 import com.tti.views.CalificacionAlumnoView;
 import com.tti.views.CitaView;
 import com.tti.views.ListadoAlumnosView;
@@ -141,6 +142,7 @@ public class PanelDeControl extends CustomComponent{
 
         inicio.setStyleName("h1");
         reunion.addItem("Reprogramar", reprogramar);
+        reunion.addItem("Bitácora", bitacoraCommand);
         reunion.addSeparator();
 
         reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
@@ -319,6 +321,12 @@ public class PanelDeControl extends CustomComponent{
     private Command calificarAlumnosCommand = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(CalificacionAlumnoView.NAME);
+        }
+    };
+    
+    private Command bitacoraCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(BitacoraView.NAME);
         }
     };
     

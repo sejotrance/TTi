@@ -107,7 +107,9 @@ public class CitaView extends CustomComponent implements View{
 		mesLabel = new Label();
 		dataSource = new BasicEventProvider();
 		calendario = new Calendar();
-		TtiUI.container.sort(new Object[]{"start"}, new boolean[]{true});
+		if(TtiUI.container.size() > 0){
+			TtiUI.container.sort(new Object[]{"start"}, new boolean[]{true});
+		}
 
 		calendario.setContainerDataSource(TtiUI.container, "caption",
 		    "description", "start", "end", "styleName");
@@ -165,7 +167,7 @@ public class CitaView extends CustomComponent implements View{
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.ALUMNO){		
+		if((userRol == Rol.ALUMNO)||(userRol == Rol.PROFESOR)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
 		}else{
@@ -193,8 +195,8 @@ public class CitaView extends CustomComponent implements View{
 	private void updateMesLabel() {
         DateFormatSymbols s = new DateFormatSymbols(calendario.getLocale());
         String month = s.getMonths()[calendar.get(GregorianCalendar.MONTH)];
-        mesLabel.setValue(month + " "
-                + calendar.get(GregorianCalendar.YEAR));
+        mesLabel.setValue("<h3>" + month + " "
+                + calendar.get(GregorianCalendar.YEAR) + "</h3>");
     }
 	
 	private void nextMonth() {

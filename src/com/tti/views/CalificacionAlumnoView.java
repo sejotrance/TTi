@@ -7,6 +7,8 @@ import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CssLayout;
@@ -43,13 +45,11 @@ public class CalificacionAlumnoView extends CustomComponent implements View{
 	}
 	
 	private void initListeners(){
-		cantidad.addValueChangeListener(new ValueChangeListener() {
-
-			private static final long serialVersionUID = 1L;
-
+		cantidad.addTextChangeListener(new TextChangeListener() {
+			
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				tablaCalificaciones.addItem();
+			public void textChange(TextChangeEvent event) {
+				Notification.show(event.getText());
 				
 			}
 		});
