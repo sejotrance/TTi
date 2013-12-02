@@ -26,6 +26,7 @@ import com.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
@@ -105,6 +106,7 @@ public class CitaView extends CustomComponent implements View{
 		
 			
 		mesLabel = new Label();
+		mesLabel.setContentMode(ContentMode.HTML);
 		dataSource = new BasicEventProvider();
 		calendario = new Calendar();
 		if(TtiUI.container.size() > 0){

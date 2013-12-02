@@ -13,6 +13,7 @@ import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
 import com.tti.views.Perfil;
+import com.tti.views.PerfilProfesorView;
 import com.tti.views.RegistroAlumnoView;
 import com.tti.views.RegistroProfesorView;
 import com.tti.views.ReprogramarView;
@@ -98,7 +99,7 @@ public class PanelDeControl extends CustomComponent{
         avance.addItem("Actualizar mi Informe", subirInforme);
         
         final MenuBar.MenuItem profesorGuia = menubar.addItem("Profesor Guía", null);
-        profesorGuia.addItem("Perfil", menuCommand);
+        profesorGuia.addItem("Perfil", perfilProfesorCommand);
         profesorGuia.addItem("Enviar un mensaje", menuCommand);
         profesorGuia.addSeparator();
 
@@ -327,6 +328,12 @@ public class PanelDeControl extends CustomComponent{
     private Command bitacoraCommand = new Command() {
         public void menuSelected(MenuItem selectedItem) {
         	getUI().getNavigator().navigateTo(BitacoraView.NAME);
+        }
+    };
+    
+    private Command perfilProfesorCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(PerfilProfesorView.NAME);
         }
     };
     

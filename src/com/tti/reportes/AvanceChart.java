@@ -29,7 +29,7 @@ package com.tti.reportes;
 
 	        Configuration conf = chart.getConfiguration();
 
-	        conf.setTitle("Progreso de las notas del informe y la aplicación");
+	        conf.setTitle("Progreso durante el periodo");
 //	        conf.setSubTitle("");
 
 	        XAxis x = new XAxis();
@@ -39,7 +39,7 @@ package com.tti.reportes;
 
 	        YAxis y = new YAxis();
 	        y.setMin(0);
-	        y.setTitle("Promedio de Nota Parcial");
+	        y.setTitle("Porcentaje de avance según el profesor guía");
 	        conf.addyAxis(y);
 
 	        Legend legend = new Legend();
@@ -61,10 +61,10 @@ package com.tti.reportes;
 	        plot.setPointPadding(0.2);
 	        plot.setBorderWidth(0);
 
-	        conf.addSeries(new ListSeries("Informe", 6.0, 5.5, 5.3, 5.8, 6.5,
-	                6.3, 6.6, 6.5, 6.4, 5.9, 6.6, 6.8));
-	        conf.addSeries(new ListSeries("Aplicación", 2.0, 3.5, 3.9, 3.7,
-	                4.3, 4.7, 4.9, 5.4, 5.5, 5.9, 6.2, 6.3));
+	        conf.addSeries(new ListSeries("Informe", 5, 6, 15, 25, 40,
+	                55, 70, 70, 70, 85, 90, 98));
+	        conf.addSeries(new ListSeries("Aplicación", 1, 3, 10, 15,
+	                15, 30, 35, 50, 60, 80, 90, 95));
 //	        conf.addSeries(new ListSeries("London", 48.9, 38.8, 39.3, 41.4, 47.0,
 //	                48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2));
 //	        conf.addSeries(new ListSeries("Berlin", 42.4, 33.2, 34.5, 39.7, 52.6,
