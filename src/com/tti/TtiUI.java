@@ -75,6 +75,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(BitacoraView.NAME, BitacoraView.class);
 	        getNavigator().addView(PerfilProfesorView.NAME, PerfilProfesorView.class);
 	        
+	        
 	        //
 	        // We use a view change handler to ensure the user is always redirected
 	        // to the login view if the user is not logged in.
