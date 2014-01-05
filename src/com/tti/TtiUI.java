@@ -15,6 +15,7 @@ import com.tti.views.Perfil;
 import com.tti.views.PerfilProfesorView;
 import com.tti.views.RegistroAlumnoView;
 import com.tti.views.RegistroProfesorView;
+import com.tti.views.ReportesView;
 import com.tti.views.ReprogramarView;
 import com.tti.views.SubirInformeView;
 import com.vaadin.addon.calendar.event.BasicEvent;
@@ -74,6 +75,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(CalificacionAlumnoView.NAME, CalificacionAlumnoView.class);
 	        getNavigator().addView(BitacoraView.NAME, BitacoraView.class);
 	        getNavigator().addView(PerfilProfesorView.NAME, PerfilProfesorView.class);
+	        getNavigator().addView(ReportesView.NAME, ReportesView.class);
 	        
 	        
 	        //

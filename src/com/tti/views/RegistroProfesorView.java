@@ -61,7 +61,7 @@ public class RegistroProfesorView extends CustomComponent implements View{
           for (String fieldName : nombreCampo) {
                   TextField field = new TextField(fieldName);
                   editorLayout.addComponent(field);
-                  field.setWidth("100%");
+                  //field.setWidth("100%");
 
                   camposProfesor.bind(field, fieldName);
           }

@@ -1,0 +1,34 @@
+package com.tti.views;
+
+import com.tti.componentes.PanelDeControl;
+import com.tti.componentes.SinPermisoComponent;
+import com.tti.enums.Rol;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
+
+public class ReportesView extends CustomComponent implements View {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3563773809359819689L;
+	public static final String NAME = "reportes";
+	private PanelDeControl panelDeControl;
+	private static final Label descripcion = new Label("<h2> Reportes </h2>" + 
+														"<p> Seleccione alguna de las opciones siguientes: </p>", ContentMode.HTML);
+	@Override
+	public void enter(ViewChangeEvent event) {
+		Rol userRol = getSession().getAttribute(Rol.class);
+		if(userRol == Rol.SECRETARIA){		
+			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
+			setCompositionRoot(new CssLayout(panelDeControl, descripcion));
+		}else{
+			//Mostrar que no tiene los permisos
+			SinPermisoComponent sinPermiso = new SinPermisoComponent();
+		    setCompositionRoot(new CssLayout(sinPermiso));
+		}
+	}
+}

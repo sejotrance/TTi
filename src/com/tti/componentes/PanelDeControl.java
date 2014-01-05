@@ -16,6 +16,7 @@ import com.tti.views.Perfil;
 import com.tti.views.PerfilProfesorView;
 import com.tti.views.RegistroAlumnoView;
 import com.tti.views.RegistroProfesorView;
+import com.tti.views.ReportesView;
 import com.tti.views.ReprogramarView;
 import com.tti.views.SubirInformeView;
 import com.vaadin.server.ThemeResource;
@@ -205,6 +206,8 @@ public class PanelDeControl extends CustomComponent{
 
        docente.addItem("Ver Listado", verListadoProfesorCommand);
        
+       final MenuBar.MenuItem reportes = menubar.addItem("Reportes", reportesCommand);
+       
        final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
        perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
        perfil.addItem("Editar Perfil", goProfile);
@@ -337,6 +340,11 @@ public class PanelDeControl extends CustomComponent{
         }
     };
     
+    private Command reportesCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(ReportesView.NAME);
+        }
+    };
 
 	
 
