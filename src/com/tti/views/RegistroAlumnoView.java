@@ -2,17 +2,22 @@ package com.tti.views;
 
 import java.util.UUID;
 
+import ttiws.entidades.StatusResult;
 import ttiws.model.PersonaModel;
 import ttiws.serviciosPersona.WSPersonaCrear;
 
 import com.google.gwt.user.client.ui.ClickListener;
+import com.tti.Email;
 import com.tti.SimpleLoginMainView;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
+import com.vaadin.client.ui.Field;
+import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -39,27 +44,17 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 	private PanelDeControl panelDeControl;
 	private static final Label descripcion = new Label("<h2> Registrar un nuevo Alumno </h2>" + 
 			"<p> Ingrese los datos en el formulario y presione el botón Registrar para guardar los cambios. </p>", ContentMode.HTML);
+	private Label textoServicioLabel;
 	private FormLayout editorLayout = new FormLayout();
 //	private FieldGroup camposAlumno = new FieldGroup();
-	private Button botonGuardar;
-	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Rol userRol = getSession().getAttribute(Rol.class);
 		if(userRol == Rol.SECRETARIA){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
+			textoServicioLabel = new Label();
 			initEditor();
-			botonGuardar = new Button("Registrar Alumno", new Button.ClickListener() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void buttonClick(ClickEvent event) {
-					String identificador = UUID.randomUUID().toString();
-					
-				}
-			});
-			setCompositionRoot(new CssLayout(panelDeControl, descripcion, editorLayout, botonGuardar));
+			setCompositionRoot(new CssLayout(panelDeControl, descripcion, textoServicioLabel, editorLayout));
 		}else{
 			//Mostrar que no tiene los permisos
 			SinPermisoComponent sinPermiso = new SinPermisoComponent();
@@ -84,9 +79,12 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		  final BeanFieldGroup<PersonaModel> binder =
 		          new BeanFieldGroup<PersonaModel>(PersonaModel.class);
 		  binder.setItemDataSource(bean);
-		  editorLayout.addComponent(binder.buildAndBind("Usuario","per_Usuario"));
-		  editorLayout.addComponent(binder.buildAndBind("Contraseña", "per_Password"));
-		  editorLayout.addComponent(binder.buildAndBind("E-Mail", "per_Email"));
+		  //editorLayout.addComponent(binder.buildAndBind("Usuario","per_Usuario"));
+		  //editorLayout.addComponent(binder.buildAndBind("Contraseña", "per_Password"));
+		  com.vaadin.ui.Field<?> emailField = binder.buildAndBind("E-Mail", "per_Email");
+		  emailField.addValidator(new EmailValidator("Ingrese un email válido"));
+		  emailField.setInvalidAllowed(false);
+		  editorLayout.addComponent(emailField);
 		  editorLayout.addComponent(binder.buildAndBind("RUN", "per_Run"));
 		  editorLayout.addComponent(binder.buildAndBind("Nombre", "per_Nombre"));
 		  editorLayout.addComponent(binder.buildAndBind("Apellido Paterno", "per_Apellido_Paterno"));
@@ -102,10 +100,13 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		          try {
 		              binder.commit();
 		          } catch (CommitException e) {
+		          }catch (InvalidValueException ive){
+		        	  
 		          }
 		          crearPersonaWS = new WSPersonaCrear();
-		          String username = bean.getPer_Usuario();
-		          String password = bean.getPer_Password();
+		          String username = bean.getPer_Email();
+		          //String password = bean.getPer_Password();
+		          String password = UUID.randomUUID().toString();
 		          String email = bean.getPer_Email();
 		          String run = bean.getPer_Run();
 		          String nombre = bean.getPer_Nombre();
@@ -113,8 +114,18 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		          String apM = bean.getPer_Apellido_Materno();
 		          String direccion = bean.getPer_Dirección();
 		          String telCelular = bean.getPer_Telefono_Celular();
-		          crearPersonaWS.crearPersona("", username, password, email, run, nombre, apP, apM, direccion, telCelular, "", 1);
-		      
+		          StatusResult status = crearPersonaWS.crearPersona("", username, password, email, run, nombre, apP, apM, direccion, telCelular, "", 1);
+		          //Si hubo una excepcion de servicio
+		          if(status.getCode() != 0){
+		        	  Notification.show("Error al registrar usuario", Notification.Type.ERROR_MESSAGE);
+		          }else{
+		        	  Notification.show("Usuario registrado exitosamente", Notification.Type.HUMANIZED_MESSAGE);
+		        	  textoServicioLabel.setCaption("El usuario ya ha sido registrado. Revisa tu correo con la información para poder ingresar a TTi");
+	  				  textoServicioLabel.setContentMode(ContentMode.HTML);
+		        	  editorLayout.setVisible(false);
+		        	  //Email mailRegistro = new Email("tti@utem.cl", email, "", "");
+		        	  //mailRegistro.sendRegistroMail(username, password);
+		          }
 		  }}));
 //          for (String fieldName : nombreCampo) {
 //                  TextField field = new TextField(fieldName);

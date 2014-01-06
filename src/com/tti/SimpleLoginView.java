@@ -1,5 +1,6 @@
 package com.tti;
 
+import com.tti.data.UserLogin;
 import com.tti.entidad.Usuario;
 import com.tti.enums.Rol;
 import com.vaadin.data.validator.AbstractValidator;
@@ -150,8 +151,12 @@ Button.ClickListener {
 	}
 	
 	boolean checkLogin(String username, String password){
+		// DESDE LA BASE DE DATOS
+		if(UserLogin.login(username, password)){
+			usuario = new Usuario(username, password, Rol.ALUMNO);
+			return true;
 		//ALUMNO
-		if(username.equals("alumno@utem.cl") && password.equals("passw0rd")){
+		}else if(username.equals("alumno@utem.cl") && password.equals("passw0rd")){
 			usuario = new Usuario(username, password, Rol.ALUMNO);
 			return true;
 		//PROFESOR
