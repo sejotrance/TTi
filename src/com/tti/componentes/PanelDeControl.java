@@ -195,7 +195,6 @@ public class PanelDeControl extends CustomComponent{
        final MenuBar.MenuItem registrar = alumno.addItem("Registrar", registrarAlumno);
 
        inicio.setStyleName("h1");
-       alumno.addItem("Actualizar", reprogramar);
        alumno.addSeparator();
 
        alumno.addItem("Ver Listado", verListadoAlumnoCommand);
