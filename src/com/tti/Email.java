@@ -66,6 +66,7 @@ public boolean sendMail(){
 
     // Setup mail server
     properties.setProperty("mail.smtp.host", host);
+    properties.setProperty("mail.transport.protocol", "smtp");
 
     // Get the default Session object.
     Session session = Session.getDefaultInstance(properties);
@@ -86,9 +87,13 @@ public boolean sendMail(){
 
         // Now set the actual message
         message.setText(this.cuerpo);
-
+        Transport transport = session.getTransport();
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
         // Send message
-        Transport.send(message);
+//        Transport.send(message);
         System.out.println("[E-MAIL]: Enviado exitosamente a " + this.to);
      }catch (MessagingException mex) {
         mex.printStackTrace();
@@ -106,6 +111,7 @@ public boolean sendRegistroMail(String username, String password){
 
     // Setup mail server
     properties.setProperty("mail.smtp.host", host);
+    properties.setProperty("mail.transport.protocol", "smtp");
 
     // Get the default Session object.
     Session session = Session.getDefaultInstance(properties);
@@ -132,7 +138,11 @@ public boolean sendRegistroMail(String username, String password){
         						"<p><b>NO OLVIDES CAMBIAR TU CONTRASEÑA UNA VEZ HAGAS LOGIN</b></p>","text/html");
 
         // Send message
-        Transport.send(message);
+        Transport transport = session.getTransport();
+        transport.connect();
+        transport.sendMessage(message,
+                message.getRecipients(Message.RecipientType.TO));
+        transport.close();
         System.out.println("[E-MAIL]: Enviado exitosamente a " + this.to);
      }catch (MessagingException mex) {
         mex.printStackTrace();

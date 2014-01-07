@@ -123,8 +123,8 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		        	  textoServicioLabel.setCaption("El usuario ya ha sido registrado. Revisa tu correo con la información para poder ingresar a TTi");
 	  				  textoServicioLabel.setContentMode(ContentMode.HTML);
 		        	  editorLayout.setVisible(false);
-		        	  //Email mailRegistro = new Email("tti@utem.cl", email, "", "");
-		        	  //mailRegistro.sendRegistroMail(username, password);
+		        	  Email mailRegistro = new Email("tti@utem.cl", email, "", "");
+		        	  mailRegistro.sendRegistroMail(username, password);
 		          }
 		  }}));
 //          for (String fieldName : nombreCampo) {
