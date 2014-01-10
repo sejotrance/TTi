@@ -39,14 +39,14 @@ Button.ClickListener {
 	public SimpleLoginView() {
 	setSizeFull();
 	
-	texto = new Label("<div class=\"well\">Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)</div>",ContentMode.HTML);
+	texto = new Label("<div class=\"well\">Por favor ingrese usuario y contraseña para acceder a la aplicación.</div>",ContentMode.HTML);
 	
 	// Create the user input field
 	user = new TextField("Usuario:");
 	user.setWidth("300px");
 	user.setRequired(true);
-	user.setInputPrompt("Tu nombre de usuario (ej. usuario@email.com)");
-	user.addValidator(new EmailValidator("El nombre de usuario debe ser una dirección email"));
+	user.setInputPrompt("Tu nombre de usuario (rut sin guion y con digito verificador)");
+	//user.addValidator(new EmailValidator("El nombre de usuario debe ser una dirección email"));
 	user.setInvalidAllowed(false);
 	user.setStyleName("form-control");
 	

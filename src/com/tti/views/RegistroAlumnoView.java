@@ -4,11 +4,14 @@ import java.util.UUID;
 
 import ttiws.entidades.StatusResult;
 import ttiws.model.PersonaModel;
+import ttiws.serviciosAlumno.WSAlumnoProfesorAgregar;
+import ttiws.serviciosPersona.WSPersonaConsultar;
 import ttiws.serviciosPersona.WSPersonaCrear;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.tti.Email;
 import com.tti.SimpleLoginMainView;
+import com.tti.componentes.ComboPersonaComponent;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
@@ -45,6 +48,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 	private static final Label descripcion = new Label("<h2> Registrar un nuevo Alumno </h2>" + 
 			"<p> Ingrese los datos en el formulario y presione el botón Registrar para guardar los cambios. </p>", ContentMode.HTML);
 	private Label textoServicioLabel;
+	private  ComboPersonaComponent comboProfesor;
 	private FormLayout editorLayout = new FormLayout();
 //	private FieldGroup camposAlumno = new FieldGroup();
 	@Override
@@ -81,6 +85,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		  binder.setItemDataSource(bean);
 		  //editorLayout.addComponent(binder.buildAndBind("Usuario","per_Usuario"));
 		  //editorLayout.addComponent(binder.buildAndBind("Contraseña", "per_Password"));
+		  comboProfesor = new ComboPersonaComponent("Profesor Guia", "4");
 		  com.vaadin.ui.Field<?> emailField = binder.buildAndBind("E-Mail", "per_Email");
 		  emailField.addValidator(new EmailValidator("Ingrese un email válido"));
 		  emailField.setInvalidAllowed(false);
@@ -89,6 +94,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		  editorLayout.addComponent(binder.buildAndBind("Nombre", "per_Nombre"));
 		  editorLayout.addComponent(binder.buildAndBind("Apellido Paterno", "per_Apellido_Paterno"));
 		  editorLayout.addComponent(binder.buildAndBind("Apellido Materno", "per_Apellido_Materno"));
+		  editorLayout.addComponent(comboProfesor);
 		  editorLayout.addComponent(binder.buildAndBind("Dirección", "per_Dirección"));
 		  editorLayout.addComponent(binder.buildAndBind("Teléfono", "per_Telefono_Celular"));
 		  
@@ -119,6 +125,10 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		          if(status.getCode() != 0){
 		        	  Notification.show("Error al registrar usuario", Notification.Type.ERROR_MESSAGE);
 		          }else{
+		        	  WSAlumnoProfesorAgregar ws1 = new WSAlumnoProfesorAgregar();
+		        	  PersonaModel p =  WSPersonaConsultar.consultarPorRun(run);
+		        	  //ESTO QUE ESTA COMENTADO FALTA
+		        	  //ws1.agregarProfesor(p.getPer_Id(), comboProfesor.);
 		        	  Notification.show("Usuario registrado exitosamente", Notification.Type.HUMANIZED_MESSAGE);
 		        	  textoServicioLabel.setCaption("El usuario ya ha sido registrado. Revisa tu correo con la información para poder ingresar a TTi");
 	  				  textoServicioLabel.setContentMode(ContentMode.HTML);
