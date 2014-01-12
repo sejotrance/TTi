@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import ttiws.entidades.StatusResult;
 import ttiws.model.PersonaModel;
+import ttiws.serviciosAlumno.WSAlumnoCarreraAgregar;
 import ttiws.serviciosAlumno.WSAlumnoProfesorAgregar;
 import ttiws.serviciosPersona.WSPersonaConsultar;
 import ttiws.serviciosPersona.WSPersonaCrear;
@@ -11,6 +12,7 @@ import ttiws.serviciosPersona.WSPersonaCrear;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.tti.Email;
 import com.tti.SimpleLoginMainView;
+import com.tti.componentes.ComboCarreraComponent;
 import com.tti.componentes.ComboPersonaComponent;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
@@ -49,6 +51,7 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 			"<p> Ingrese los datos en el formulario y presione el botón Registrar para guardar los cambios. </p>", ContentMode.HTML);
 	private Label textoServicioLabel;
 	private  ComboPersonaComponent comboProfesor;
+	private  ComboCarreraComponent comboCarrera;
 	private FormLayout editorLayout = new FormLayout();
 //	private FieldGroup camposAlumno = new FieldGroup();
 	@Override
@@ -86,9 +89,11 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		  //editorLayout.addComponent(binder.buildAndBind("Usuario","per_Usuario"));
 		  //editorLayout.addComponent(binder.buildAndBind("Contraseña", "per_Password"));
 		  comboProfesor = new ComboPersonaComponent("Profesor Guia", "4");
+		  comboCarrera = new ComboCarreraComponent("Carrera", 1);
 		  com.vaadin.ui.Field<?> emailField = binder.buildAndBind("E-Mail", "per_Email");
 		  emailField.addValidator(new EmailValidator("Ingrese un email válido"));
 		  emailField.setInvalidAllowed(false);
+		  editorLayout.addComponent(comboCarrera);
 		  editorLayout.addComponent(emailField);
 		  editorLayout.addComponent(binder.buildAndBind("RUN", "per_Run"));
 		  editorLayout.addComponent(binder.buildAndBind("Nombre", "per_Nombre"));
@@ -110,43 +115,49 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		        	  
 		          }
 		          crearPersonaWS = new WSPersonaCrear();
-		          String username = bean.getPer_Email();
 		          //String password = bean.getPer_Password();
 		          String password = UUID.randomUUID().toString();
 		          String email = bean.getPer_Email();
 		          String run = bean.getPer_Run();
+		          String username = run;
 		          String nombre = bean.getPer_Nombre();
 		          String apP = bean.getPer_Apellido_Paterno();
 		          String apM = bean.getPer_Apellido_Materno();
 		          String direccion = bean.getPer_Dirección();
 		          String telCelular = bean.getPer_Telefono_Celular();
-		          StatusResult status = crearPersonaWS.crearPersona("", username, password, email, run, nombre, apP, apM, direccion, telCelular, "", 1);
+		          int valComboCarrera = Integer.parseInt(comboCarrera.getValue());
+		          StatusResult status = crearPersonaWS.crearPersona("6", username, password, email, run, nombre, apP, apM, direccion, telCelular,valComboCarrera , 1);
 		          //Si hubo una excepcion de servicio
 		          if(status.getCode() != 0){
-		        	  Notification.show("Error al registrar usuario", Notification.Type.ERROR_MESSAGE);
+		        	  Notification.show("Error al registrar usuario:" + status.getMessage(), Notification.Type.ERROR_MESSAGE);
 		          }else{
+		        	  int valCombo = Integer.parseInt(comboProfesor.getValue());
 		        	  WSAlumnoProfesorAgregar ws1 = new WSAlumnoProfesorAgregar();
-		        	  PersonaModel p =  WSPersonaConsultar.consultarPorRun(run);
-		        	  //ESTO QUE ESTA COMENTADO FALTA
-		        	  //ws1.agregarProfesor(p.getPer_Id(), comboProfesor.);
-		        	  Notification.show("Usuario registrado exitosamente", Notification.Type.HUMANIZED_MESSAGE);
-		        	  textoServicioLabel.setCaption("El usuario ya ha sido registrado. Revisa tu correo con la información para poder ingresar a TTi");
-	  				  textoServicioLabel.setContentMode(ContentMode.HTML);
-		        	  editorLayout.setVisible(false);
-		        	  Email mailRegistro = new Email("tti@utem.cl", email, "", "");
-		        	  mailRegistro.sendRegistroMail(username, password);
+		        	  PersonaModel alumnoAux = WSPersonaConsultar.consultarPorRun(run);
+		        	  StatusResult statusAgregarProfesor = ws1.agregarProfesor(alumnoAux.getPer_Id(), valCombo);
+		        	  if(statusAgregarProfesor.getCode() == 0){
+			        	  Notification.show("Usuario registrado exitosamente", Notification.Type.HUMANIZED_MESSAGE);
+			        	  textoServicioLabel.setCaption("El usuario ya ha sido registrado. Revisa tu correo con la información para poder ingresar a TTi");
+		  				  textoServicioLabel.setContentMode(ContentMode.HTML);
+			        	  editorLayout.setVisible(false);
+			        	  Email mailRegistro = new Email("tti@utem.cl", email, "", "");
+			        	  mailRegistro.sendRegistroMail(username, password);
+		        	  }else{
+		        		  Notification.show("Error al registrar usuario: " + statusAgregarProfesor.getMessage(), Notification.Type.ERROR_MESSAGE);
+		        	  }
+		        	  
 		          }
 		  }}));
-//          for (String fieldName : nombreCampo) {
-//                  TextField field = new TextField(fieldName);
-//                  editorLayout.addComponent(field);
-//                  //field.setWidth("100%");
-//
-//                  camposAlumno.bind(field, fieldName);
-//          }
-//          editorLayout.addComponent(removeContactButton);
-
-//          camposAlumno.setBuffered(false);
+		  
+		  
+		  //SOLO PARA TESTING
+		  editorLayout.addComponent(new Button("TEST", new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Notification.show("Valor: " + comboProfesor.getValue());
+			}
+		}));	
   }
 
 }

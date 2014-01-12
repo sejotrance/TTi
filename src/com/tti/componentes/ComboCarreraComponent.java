@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.drools.rule.builder.dialect.java.parser.JavaParser.formalParameter_return;
 
+import ttiws.model.CarreraModel;
 import ttiws.model.PersonaModel;
+import ttiws.serviciosCarrera.WSCarreraListar;
 import ttiws.serviciosPersona.WSPersonaListar;
 
 import com.vaadin.data.Item;
@@ -22,29 +24,28 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 
-public class ComboPersonaComponent extends CustomComponent {
-	private ComboBox comboProfesor;
+public class ComboCarreraComponent extends CustomComponent {
+	private ComboBox comboCarrera;
 	private static final String PROPERTY_NAME = "name";
 	private static final String PROPERTY_VALUE = "value";
 	private static String value = "";
-	List<PersonaModel> listaPersonas;
+	List<CarreraModel> listaCarreras;
 	
-	public ComboPersonaComponent(String caption, String codTipoPersona) {
+	public ComboCarreraComponent(String caption, int codEscuela) {
 		this.value = "";
-		WSPersonaListar ws = new WSPersonaListar();
-		listaPersonas = ws.listarPersonas(codTipoPersona);
+		listaCarreras = WSCarreraListar.listarCarreras(codEscuela);
 		//SETTING COMBO
-		comboProfesor = new ComboBox(caption, this.getContainer());
-		comboProfesor.setInputPrompt("Seleccione un valor");
-		comboProfesor.setItemCaptionPropertyId(this.PROPERTY_NAME);
-		comboProfesor.setItemCaptionMode(ItemCaptionMode.PROPERTY);
-		comboProfesor.setFilteringMode(FilteringMode.CONTAINS);
-		comboProfesor.setImmediate(true);
-		comboProfesor.setNullSelectionAllowed(false);
+		comboCarrera = new ComboBox(caption, this.getContainer());
+		comboCarrera.setInputPrompt("Seleccione un valor");
+		comboCarrera.setItemCaptionPropertyId(this.PROPERTY_NAME);
+		comboCarrera.setItemCaptionMode(ItemCaptionMode.PROPERTY);
+		comboCarrera.setFilteringMode(FilteringMode.CONTAINS);
+		comboCarrera.setImmediate(true);
+		comboCarrera.setNullSelectionAllowed(false);
 		addHandlers();
 		addListeners();
 		//SETTING LAYOUT
-		VerticalLayout layout = new VerticalLayout(comboProfesor);
+		VerticalLayout layout = new VerticalLayout(comboCarrera);
 		setCompositionRoot(layout);
 	}
 	
@@ -54,9 +55,9 @@ public class ComboPersonaComponent extends CustomComponent {
         container.addContainerProperty(PROPERTY_VALUE, String.class,
                 null);
         
-        for (PersonaModel persona : listaPersonas) {
-        	String name = persona.getPer_Nombre() + " " +  persona.getPer_Apellido_Paterno() + " " + persona.getPer_Apellido_Materno();
-            String id = Integer.toString(persona.getPer_Id());
+        for (CarreraModel carrera : listaCarreras) {
+        	String name = carrera.getCar_Codigo() + " : " + carrera.getCar_Nombre();
+            String id = Integer.toString(carrera.getCar_Id());
             Item item = container.addItem(id);
             item.getItemProperty(PROPERTY_NAME).setValue(name);
             item.getItemProperty(PROPERTY_VALUE).setValue(id);
@@ -76,12 +77,12 @@ public class ComboPersonaComponent extends CustomComponent {
 	 }
 	 
 	 private void addHandlers(){
-		 comboProfesor.setNewItemHandler(new NewItemHandler() {
+		 comboCarrera.setNewItemHandler(new NewItemHandler() {
 	            @Override
 	            public void addNewItem(final String newItemCaption) {
 	                boolean newItem = true;
-	                for (final Object itemId : comboProfesor.getItemIds()) {
-	                    if (newItemCaption.equalsIgnoreCase(comboProfesor
+	                for (final Object itemId : comboCarrera.getItemIds()) {
+	                    if (newItemCaption.equalsIgnoreCase(comboCarrera
 	                            .getItemCaption(itemId))) {
 	                        newItem = false;
 	                        break;
@@ -89,11 +90,11 @@ public class ComboPersonaComponent extends CustomComponent {
 	                }
 	                if (newItem) {
 	                    // Adds new option
-	                    if (comboProfesor.addItem(newItemCaption) != null) {
-	                        final Item item = comboProfesor.getItem(newItemCaption);
+	                    if (comboCarrera.addItem(newItemCaption) != null) {
+	                        final Item item = comboCarrera.getItem(newItemCaption);
 	                        item.getItemProperty(PROPERTY_NAME)
 	                                .setValue(newItemCaption);
-	                        comboProfesor.setValue(newItemCaption);
+	                        comboCarrera.setValue(newItemCaption);
 	                    }
 	                }
 	            }
@@ -102,7 +103,7 @@ public class ComboPersonaComponent extends CustomComponent {
 	 }
 	 
 	 private void addListeners(){
-		 comboProfesor.addValueChangeListener(new ValueChangeListener() {
+		 comboCarrera.addValueChangeListener(new ValueChangeListener() {
 	            @Override
 	            public void valueChange(ValueChangeEvent event) {
 	                final String valueString = String.valueOf(event.getProperty()
