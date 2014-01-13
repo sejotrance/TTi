@@ -39,7 +39,7 @@ public class MotorProcesos {
 	public void Crear(){
 		//ProcessEngines.init();
 		processEngine = ProcessEngineConfiguration
-				.createStandaloneInMemProcessEngineConfiguration()
+				.createStandaloneProcessEngineConfiguration()
 			    .buildProcessEngine();
 		repositoryService = processEngine.getRepositoryService();
 	}

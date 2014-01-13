@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.TtiUI;
 import com.tti.componentes.GestorUsuariosComponent;
 import com.tti.componentes.PanelDeControl;
@@ -20,8 +22,8 @@ public class ListadoReunionesView extends CustomComponent implements View
 	private Table listadoReuniones;
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.ALUMNO || userRol == Rol.PROFESOR){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.ALUMNO) || userRol.contains(Rol.PROFESOR)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			setCompositionRoot(new CssLayout(panelDeControl, listadoReuniones));
 		}else{

@@ -1,6 +1,7 @@
 package com.tti.views;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import com.processEngine.MotorProcesos;
 import com.tti.componentes.PanelDeControl;
@@ -28,8 +29,8 @@ public class PerfilProfesorView extends CustomComponent implements View {
 	}
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.ALUMNO){
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.ALUMNO)){	
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			nombreCampos = new String[] {"<b>Nombre:</b> Mauro", "<b>Apellido:</b> Castillo Valdés",
 					"<b>Email:</b> mcast@utem.cl", "<b>Teléfono:</b> 02-21234567"};

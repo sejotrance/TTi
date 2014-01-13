@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.componentes.GestorUsuariosComponent;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
@@ -28,8 +30,8 @@ public class ListadoProfesoresView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.SECRETARIA){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.SECRETARIA)){			
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			gestorUsuarios = new GestorUsuariosComponent(nombreCampo, null, true);
 			setCompositionRoot(new CssLayout(panelDeControl, descripcionLabel, gestorUsuarios));

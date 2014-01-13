@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
@@ -21,8 +23,8 @@ public class ReportesView extends CustomComponent implements View {
 														"<p> Seleccione alguna de las opciones siguientes: </p>", ContentMode.HTML);
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.SECRETARIA){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			setCompositionRoot(new CssLayout(panelDeControl, descripcion));
 		}else{

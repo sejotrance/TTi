@@ -1,6 +1,8 @@
 package com.tti.componentes;
 
 //import com.vaadin.server.ExternalResource;
+import java.util.List;
+
 import com.tti.SimpleLoginMainView;
 import com.tti.SimpleLoginView;
 import com.tti.enums.Rol;
@@ -37,204 +39,112 @@ public class PanelDeControl extends CustomComponent{
 	public static final String NAME = "panelDeControl";
     private MenuBar menubar;
     private MenuBar menubarUser;
-    private Button mensaje;
     private String username;
     
     public PanelDeControl(String username){
     	menubar = new MenuBar();
     	menubarUser = new MenuBar();
     	this.username = username;
-    	mensaje = new Button("Nuevo Mensaje");
     }
-	public PanelDeControl(String username, Rol userRol) {
+	public PanelDeControl(String username, List<Rol> userRol) {
     	
     	menubar = new MenuBar();
     	menubarUser = new MenuBar();
     	this.username = username;
-    	mensaje = new Button("Nuevo Mensaje");
-    	switch (userRol) {
-			case ADMINISTRADOR:
-				break;
-			case DIRECTOR_DEPARTAMENTO:
-				break;
-			case DIRECTOR_ESCUELA:
-				break;
-			case ALUMNO:
-		    	setPanelAlumno();
-				break;
-			case SECRETARIA:
-				setPanelSecretaria();
-				break;
-			case JEFE_CARRERA:
-				break;
-			case PROFESOR:
-				setPanelProfesor();
-				break;
-			case UNDEFINED:
-				
-				break;
-	
-			default:
-				break;
-		}
+    	setPaneldeControl(userRol);
         }
     
-    @SuppressWarnings("unused")
-	private void setPanelAlumno(){
-    	 // Save reference to individual items so we can add sub-menu items to
-        // them
+	
+	private void setPaneldeControl(List<Rol> userRol){
+		//PANEL DE CONTROL
+		
+		//INICIO
     	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
-        final MenuBar.MenuItem reunion = menubar.addItem("Reunión", null);
-        final MenuBar.MenuItem agendar = reunion.addItem("Agendar", agendarCita);
-
-        inicio.setStyleName("h1");
-        reunion.addItem("Reprogramar", reprogramar);
-        reunion.addSeparator();
-
-        reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
-
-        final MenuBar.MenuItem avance = menubar.addItem("Mi Avance", null);
-        avance.addItem("Revisar Mi Avance", miAvance);
-        avance.addSeparator();
-
-        avance.addItem("Actualizar mi Informe", subirInforme);
+    	inicio.setStyleName("h1");
         
-        final MenuBar.MenuItem profesorGuia = menubar.addItem("Profesor Guía", null);
-        profesorGuia.addItem("Perfil", perfilProfesorCommand);
-        profesorGuia.addItem("Enviar un mensaje", menuCommand);
-        profesorGuia.addSeparator();
-
-        profesorGuia.addItem("Cambio Profesor", menuCommand);
+    	//REUNION
+    	if((userRol.contains(Rol.PROFESOR) && userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)) || userRol.contains(Rol.ALUMNO) || userRol.contains(Rol.PROFESOR)){
+	    	final MenuBar.MenuItem reunion = menubar.addItem("Reunión", null);
+	    	reunion.addItem("Agendar / Reprogramar", agendarCita);
+	        reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
+	        if((userRol.contains(Rol.PROFESOR) && userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)) || userRol.contains(Rol.PROFESOR)){
+		        reunion.addSeparator();
+		        reunion.addItem("Bitácora", bitacoraCommand);
+	        }
+    	}
         
+        //PERFIL
         final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
         perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
         perfil.addItem("Editar Perfil", goProfile);
         perfil.addSeparator();
         perfil.addItem("Cerrar Sesión", logout);
         
-        menubar.setHtmlContentAllowed(true);
+        //AVANCE
+        if(userRol.contains(Rol.ALUMNO)){
+	        final MenuBar.MenuItem avance = menubar.addItem("Mi Avance", null);
+	        avance.addItem("Revisar Mi Avance", miAvance);
+	        avance.addSeparator();
+	        avance.addItem("Actualizar mi Informe", subirInforme);
+        }
         
-        menubar.setSizeUndefined();
-        menubarUser.setSizeUndefined();
-        mensaje.setSizeUndefined();
-        menubar.setWidth("100%");
-        menubarUser.setWidth("100%");
-        mensaje.setWidth("100%");
-        navbar = new HorizontalLayout(menubar, menubarUser, mensaje);
+        //PROFESOR GUIA
+        if(userRol.contains(Rol.ALUMNO)){
+	        final MenuBar.MenuItem profesorGuia = menubar.addItem("Profesor Guía", null);
+	        profesorGuia.addItem("Perfil", perfilProfesorCommand);
+	        profesorGuia.addItem("Enviar un mensaje", menuCommand);
+	        profesorGuia.addSeparator();
+	        profesorGuia.addItem("Cambio Profesor", menuCommand);
+	        }
         
-        navbar.setComponentAlignment(menubar, Alignment.MIDDLE_LEFT);
-        navbar.setComponentAlignment(menubarUser, Alignment.MIDDLE_RIGHT);
-        navbar.setComponentAlignment(mensaje, Alignment.MIDDLE_RIGHT);
-        navbar.setWidth("100%");
-        navbar.setExpandRatio(menubar, 3.0f);
-        navbar.setExpandRatio(menubarUser, 1.0f);
-        navbar.setExpandRatio(mensaje, 1.0f);
-        navbar.setPrimaryStyleName("navbar navbar-default navbar-fixed-top");
-        navbar.setSpacing(false);
-        navbar.setStyleName("nav navbar-nav");
-        setCompositionRoot(new CssLayout(navbar));
-    }
-    
-    private void setPanelProfesor(){
-    	 // Save reference to individual items so we can add sub-menu items to
-        // them
-    	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
-        final MenuBar.MenuItem reunion = menubar.addItem("Reunión", null);
-        final MenuBar.MenuItem agendar = reunion.addItem("Agendar", agendarCita);
-
-        inicio.setStyleName("h1");
-        reunion.addItem("Reprogramar", reprogramar);
-        reunion.addItem("Bitácora", bitacoraCommand);
-        reunion.addSeparator();
-
-        reunion.addItem("Ver Listado", verListadoReuAlumnoCommand);
-
+        //ALUMNO
+        if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){
+	        final MenuBar.MenuItem alumno = menubar.addItem("Alumno", null);
+	        alumno.addItem("Ver Listado", verListadoAlumnoCommand);
+	        if(userRol.contains(Rol.SECRETARIA)){
+		        alumno.addSeparator();
+		        alumno.addItem("Registrar", registrarAlumno);
+	        }
+        }
+        
+        //DOCENTE
+        if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){
+	        final MenuBar.MenuItem docente = menubar.addItem("Docente", null);
+	        docente.addItem("Ver Listado", verListadoProfesorCommand);
+	        if(userRol.contains(Rol.SECRETARIA)){
+		        docente.addSeparator();
+		        docente.addItem("Registrar", registrarProfesorCommand);
+	        }
+        }
+        //REPORTES
+        if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){
+        	final MenuBar.MenuItem reportes = menubar.addItem("Reportes", reportesCommand);
+        }
+        //ALUMNOS
+        if(userRol.contains(Rol.PROFESOR)){
         final MenuBar.MenuItem alumnos = menubar.addItem("Mis Alumnos", null);
-        alumnos.addItem("Revisar Avance", avanceAlumnosCommand);
-        alumnos.addSeparator();
-
-        alumnos.addItem("Revisar Informe", subirInforme);
-        alumnos.addItem("Calificar", calificarAlumnosCommand);
-        
-              
-        final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
-        perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
-        perfil.addItem("Editar Perfil", goProfile);
-        perfil.addSeparator();
-        perfil.addItem("Cerrar Sesión", logout);
-        
+	        alumnos.addItem("Revisar Avance", avanceAlumnosCommand);
+	        alumnos.addSeparator();
+	        alumnos.addItem("Revisar Informe", subirInforme);
+	        alumnos.addItem("Calificar", calificarAlumnosCommand);
+        }
         menubar.setHtmlContentAllowed(true);
         
         menubar.setSizeUndefined();
         menubarUser.setSizeUndefined();
-        mensaje.setSizeUndefined();
-        menubar.setWidth("100%");
-        menubarUser.setWidth("100%");
-        mensaje.setWidth("100%");
-        navbar = new HorizontalLayout(menubar, menubarUser, mensaje);
+        navbar = new HorizontalLayout(menubar, menubarUser);
         
         navbar.setComponentAlignment(menubar, Alignment.MIDDLE_LEFT);
         navbar.setComponentAlignment(menubarUser, Alignment.MIDDLE_RIGHT);
-        navbar.setComponentAlignment(mensaje, Alignment.MIDDLE_RIGHT);
         navbar.setWidth("100%");
         navbar.setExpandRatio(menubar, 3.0f);
         navbar.setExpandRatio(menubarUser, 1.0f);
-        navbar.setExpandRatio(mensaje, 1.0f);
         navbar.setPrimaryStyleName("navbar navbar-default navbar-fixed-top");
         navbar.setSpacing(false);
         navbar.setStyleName("nav navbar-nav");
         setCompositionRoot(new CssLayout(navbar));
-    }
+	}
     
-    
-    private void setPanelSecretaria(){
-   	 // Save reference to individual items so we can add sub-menu items to
-       // them
-   	final MenuBar.MenuItem inicio = menubar.addItem("TTi", goHome);
-       final MenuBar.MenuItem alumno = menubar.addItem("Alumno", null);
-       final MenuBar.MenuItem registrar = alumno.addItem("Registrar", registrarAlumno);
-
-       inicio.setStyleName("h1");
-       alumno.addSeparator();
-
-       alumno.addItem("Ver Listado", verListadoAlumnoCommand);
-
-       final MenuBar.MenuItem docente = menubar.addItem("Docente", null);
-       docente.addItem("Registrar", registrarProfesorCommand);
-       docente.addSeparator();
-
-       docente.addItem("Ver Listado", verListadoProfesorCommand);
-       
-       final MenuBar.MenuItem reportes = menubar.addItem("Reportes", reportesCommand);
-       
-       final MenuBar.MenuItem perfil = menubarUser.addItem(this.username, null);
-       perfil.setIcon(new ThemeResource("../../imagenes/1369309745_user.png"));
-       perfil.addItem("Editar Perfil", goProfile);
-       perfil.addSeparator();
-       perfil.addItem("Cerrar Sesión", logout);
-       
-       menubar.setHtmlContentAllowed(true);
-       
-       menubar.setSizeUndefined();
-       menubarUser.setSizeUndefined();
-       mensaje.setSizeUndefined();
-       menubar.setWidth("100%");
-       menubarUser.setWidth("100%");
-       mensaje.setWidth("100%");
-       navbar = new HorizontalLayout(menubar, menubarUser, mensaje);
-       
-       navbar.setComponentAlignment(menubar, Alignment.MIDDLE_LEFT);
-       navbar.setComponentAlignment(menubarUser, Alignment.MIDDLE_RIGHT);
-       navbar.setComponentAlignment(mensaje, Alignment.MIDDLE_RIGHT);
-       navbar.setWidth("100%");
-       navbar.setExpandRatio(menubar, 3.0f);
-       navbar.setExpandRatio(menubarUser, 1.0f);
-       navbar.setExpandRatio(mensaje, 1.0f);
-       navbar.setPrimaryStyleName("navbar navbar-default navbar-fixed-top");
-       navbar.setSpacing(false);
-       navbar.setStyleName("nav navbar-nav");
-       setCompositionRoot(new CssLayout(navbar));
-   }
     private Command menuCommand = new Command() {
         public void menuSelected(MenuItem selectedItem) {
             

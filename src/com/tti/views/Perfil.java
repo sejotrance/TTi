@@ -1,6 +1,7 @@
 package com.tti.views;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import com.processEngine.MotorProcesos;
 import com.tti.componentes.PanelDeControl;
@@ -31,7 +32,7 @@ public class Perfil extends CustomComponent implements View {
 	}
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
 		panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 		nombreCampos = new String[] {"RUN", "Nombre", "Apellido",
 				"Email", "Teléfono", "Fecha de Nacimiento", "Dirección",

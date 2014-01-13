@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.TtiUI;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
@@ -25,8 +27,8 @@ public class BitacoraView extends CustomComponent implements View{
 			"<p> Del siguiente listado seleccione una reunión para realizar anotaciones </p>", ContentMode.HTML);
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.PROFESOR){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.PROFESOR)){			
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			setCompositionRoot(new CssLayout(panelDeControl, descripcionLabel, listadoReuniones));
 		}else{

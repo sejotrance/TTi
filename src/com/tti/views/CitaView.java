@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.text.DateFormatSymbols;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import com.tti.TtiUI;
@@ -168,8 +169,8 @@ public class CitaView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if((userRol == Rol.ALUMNO)||(userRol == Rol.PROFESOR)){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if((userRol.contains(Rol.ALUMNO))||(userRol.contains(Rol.PROFESOR))){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			setCompositionRoot(new CssLayout(panelDeControl, mesLabel, nuevaReunion, botonMes, botonSem, botonPrev, botonSig, calendario));
 		}else{

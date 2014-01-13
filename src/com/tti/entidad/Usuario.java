@@ -1,23 +1,27 @@
 package com.tti.entidad;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tti.enums.Rol;
 
 public class Usuario {
-	private Rol rolUsuario;
+	private List<Rol> rolesUsuario;
 	private String username;
 	private String password;
 	
 	public Usuario() {
-		rolUsuario = Rol.UNDEFINED;
+		rolesUsuario = new ArrayList<Rol>();
 		username = "";
 		password = "";
 	}
 	
-	public Usuario(String username, String password, Rol rolUsuario){
+	public Usuario(String username, String password, List<Rol> rolesUsuario){
 		this.username = username;
 		this.password = password;
-		this.rolUsuario = rolUsuario;		
+		this.rolesUsuario = rolesUsuario;		
 	}
+	
 	/************* SETTERS ******************/
 	public void setUsername(String username) {
 		this.username = username;
@@ -27,20 +31,25 @@ public class Usuario {
 		this.password = password;
 	}
 	
-	public void setRolUsuario(Rol rolUsuario) {
-		this.rolUsuario = rolUsuario;
+	public void setRolesUsuario(List<Rol> rolesUsuario) {
+		this.rolesUsuario = rolesUsuario;
 	}
+	
+	public void addRolUsuario(Rol rolUsuario) {
+		this.rolesUsuario.add(rolUsuario);
+	}
+	
 	/************* GETTERS ******************/
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 	
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 	
-	public Rol getRolUsuario() {
-		return rolUsuario;
+	public List<Rol> getRolesUsuario() {
+		return rolesUsuario;
 	}
 	
 }

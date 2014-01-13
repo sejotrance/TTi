@@ -1,5 +1,13 @@
 package com.tti;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ttiws.model.PersonaHasRolModel;
+import ttiws.model.PersonaModel;
+import ttiws.model.RolModel;
+import ttiws.serviciosPersona.WSPersonaConsultar;
+
 import com.tti.data.UserLogin;
 import com.tti.entidad.Usuario;
 import com.tti.enums.Rol;
@@ -137,7 +145,7 @@ Button.ClickListener {
 		if(isValid){
 		    // Store the current user in the service session
 		    getSession().setAttribute("user", username);
-		    getSession().setAttribute(Rol.class, usuario.getRolUsuario());
+		    getSession().setAttribute("roles", usuario.getRolesUsuario());
 		
 		    // Navigate to main view
 		    getUI().getNavigator().navigateTo(SimpleLoginMainView.NAME);
@@ -151,40 +159,73 @@ Button.ClickListener {
 	}
 	
 	boolean checkLogin(String username, String password){
-		// DESDE LA BASE DE DATOS
-		if(UserLogin.login(username, password)){
-			usuario = new Usuario(username, password, Rol.ALUMNO);
-			return true;
+		List<Rol> rolesAux = new ArrayList<Rol>();
 		//ALUMNO
-		}else if(username.equals("alumno@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.ALUMNO);
+		if(username.equals("alumno@utem.cl") && password.equals("passw0rd")){
+			rolesAux.add(Rol.ALUMNO);
+			usuario = new Usuario(username, password, rolesAux);
 			return true;
 		//PROFESOR
 		}else if(username.equals("profesor@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.PROFESOR);
+			rolesAux.add(Rol.PROFESOR);
+			usuario = new Usuario(username, password, rolesAux);
 			return true;
 		//JEFE DE CARRERA
 		}else if(username.equals("jc@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.JEFE_CARRERA);
+			rolesAux.add(Rol.JEFE_CARRERA);
+			usuario = new Usuario(username, password, rolesAux);
 			return true;
-		//DIRECTOR DE DEPARTAMENTO
+		//DIRECTOR DE ESCUELA
 		}else if(username.equals("de@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.DIRECTOR_ESCUELA);
+			rolesAux.add(Rol.DIRECTOR_ESCUELA);
+			usuario = new Usuario(username, password, rolesAux);
 			return true;
 		//DIRECTOR DE DEPARTAMENTO
 		}else if(username.equals("dp@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.DIRECTOR_DEPARTAMENTO); 
+			rolesAux.add(Rol.DIRECTOR_DEPARTAMENTO);
+			usuario = new Usuario(username, password, rolesAux); 
 			return true;
 		//SECRETARIA
 		}else if(username.equals("secretaria@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.SECRETARIA); 
+			rolesAux.add(Rol.SECRETARIA);
+			usuario = new Usuario(username, password, rolesAux); 
 			return true;
 		//ADMINISTRADOR
 		}else if(username.equals("administrador@utem.cl") && password.equals("passw0rd")){
-			usuario = new Usuario(username, password, Rol.ADMINISTRADOR); 
+			rolesAux.add(Rol.ADMINISTRADOR);
+			usuario = new Usuario(username, password, rolesAux); 
+			return true;
+		// DESDE LA BASE DE DATOS
+		}else if(UserLogin.login(username, password)){
+			PersonaModel personaLogueada = WSPersonaConsultar.consultarPorRun(username);
+			List<PersonaHasRolModel> roles = personaLogueada.getPersonaHasRols();
+			for (PersonaHasRolModel rol : roles) {
+				if(rol.getPer_Rol_Es_Vigente()){
+					switch (rol.getRol().getRol_Id()) {
+					case 1:
+						rolesAux.add(Rol.DIRECTOR_DEPARTAMENTO); break;
+					case 2:
+						rolesAux.add(Rol.DIRECTOR_ESCUELA); break;
+					case 3:
+						rolesAux.add(Rol.JEFE_CARRERA); break;
+					case 4:
+						rolesAux.add(Rol.PROFESOR); break;
+					case 5:
+						rolesAux.add(Rol.SECRETARIA); break;
+					case 6:
+						rolesAux.add(Rol.ALUMNO); break;
+					default:
+						rolesAux.add(Rol.ADMINISTRADOR); break;
+					}
+					
+				}
+			}
+			
+			usuario = new Usuario(username, password, rolesAux);
 			return true;
 		}else{
-			usuario = new Usuario(username, password, Rol.UNDEFINED);
+			rolesAux.add(Rol.UNDEFINED);
+			usuario = new Usuario(username, password, rolesAux);
 			return false;
 		}
 	}

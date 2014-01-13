@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
@@ -28,8 +30,8 @@ public class AvanceAlumnosView extends CustomComponent implements View{
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.PROFESOR){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.PROFESOR)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			Component ret = createChart();
 	        ret.setWidth("100%");

@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
@@ -34,8 +36,8 @@ public class RegistroProfesorView extends CustomComponent implements View{
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.SECRETARIA){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.SECRETARIA)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			initEditor();
 			botonGuardar = new Button("Registrar Profesor", new Button.ClickListener() {

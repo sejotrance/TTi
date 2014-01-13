@@ -1,5 +1,6 @@
 package com.tti.views;
 
+import java.util.List;
 import java.util.UUID;
 
 import ttiws.entidades.StatusResult;
@@ -56,8 +57,8 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 //	private FieldGroup camposAlumno = new FieldGroup();
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.SECRETARIA){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.SECRETARIA)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			textoServicioLabel = new Label();
 			initEditor();

@@ -1,5 +1,7 @@
 package com.tti.views;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.TextBox;
 import com.tti.componentes.GestorUsuariosComponent;
 import com.tti.componentes.PanelDeControl;
@@ -28,8 +30,8 @@ public class CalificacionAlumnoView extends CustomComponent implements View{
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Rol userRol = getSession().getAttribute(Rol.class);
-		if(userRol == Rol.PROFESOR){		
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(userRol.contains(Rol.PROFESOR)){			
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			cantidad = new TextField("Seleccione cantidad de calificaciones a ingresar para el alumno:");
 			tablaCalificaciones = new Table("Calificaciones seleccionadas");

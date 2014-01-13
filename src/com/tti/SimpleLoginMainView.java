@@ -3,6 +3,7 @@ package com.tti;
 import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import com.processEngine.MotorProcesos;
@@ -25,6 +26,7 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     public PanelDeControl panelDeControl;
     private static Label textoHoy;
     private static Label diasFin;
+    private Label ttcual; //EN QUE TRABAJO DE TITULO ESTA ACTUALMENTE
     private static Label fechaFinSemestre;
     
     public SimpleLoginMainView() throws FileNotFoundException {
@@ -32,20 +34,21 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     	int dia = fechaHoy.get(Calendar.DATE);
     	String mes = fechaHoy.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     	int anno = fechaHoy.get(Calendar.YEAR);
-//    	textoHoy = new Label("<p>Fecha de Hoy: " + fechaHoy.get(Calendar.MONTH) + "</p>", ContentMode.HTML);
+    	ttcual = new Label("<h3>Actualmente estás en :</h3>", ContentMode.HTML);
     	textoHoy = new Label("<p>Fecha de Hoy: " + dia + " de " + mes + " de " + anno + "</p>", ContentMode.HTML);
-    	diasFin = new Label("<p>Faltan 30 Dias para el termino del Segundo Semestre de 2013</p>", ContentMode.HTML);
-    	fechaFinSemestre = new Label("<p>El semestre termina el 20 de Septiembre de 2013</p>", ContentMode.HTML);
+    	diasFin = new Label("<p>Faltan 15 Dias para el termino del Segundo Semestre de 2013</p>", ContentMode.HTML);
+    	fechaFinSemestre = new Label("<p>El semestre termina el 30 de Enero de 2013</p>", ContentMode.HTML);
     	panelDeControl = new PanelDeControl("Username");
-        setCompositionRoot(new CssLayout(panelDeControl, textoHoy, diasFin, fechaFinSemestre));
+        setCompositionRoot(new CssLayout(panelDeControl, ttcual, textoHoy, diasFin, fechaFinSemestre));
     }
 
     @Override
     public void enter(ViewChangeEvent event) {
         // Get the user name from the session
         username = String.valueOf(getSession().getAttribute("user"));
-        panelDeControl = new PanelDeControl(username,getSession().getAttribute(Rol.class));
-        setCompositionRoot(new CssLayout(panelDeControl, textoHoy, diasFin, fechaFinSemestre));
+        List<Rol> roles = (List<Rol>) getSession().getAttribute("roles");
+        panelDeControl = new PanelDeControl(username,roles);
+        setCompositionRoot(new CssLayout(panelDeControl, ttcual, textoHoy, diasFin, fechaFinSemestre));
         Notification.show(username);
 //        new Notification("Caption", String.valueOf(getSession().getAttribute("rol")), Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
         

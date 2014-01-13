@@ -1,6 +1,7 @@
 package com.tti.views;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.tti.componentes.PanelDeControl;
@@ -34,7 +35,7 @@ public class SubirInformeView extends CustomComponent implements View {
 		container = new BeanItemContainer<ArchivoDemo>(ArchivoDemo.class);
 		initDemoContainer(5);
 		tablaArchivos = new Table("Mis archivos", container);
-		Rol userRol = getSession().getAttribute(Rol.class);
+		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
 		panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 		setCompositionRoot(new CssLayout(panelDeControl, descripcionLabel, upload, tablaArchivos));
 			
