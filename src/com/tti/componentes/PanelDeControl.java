@@ -11,6 +11,7 @@ import com.tti.views.AvanceView;
 import com.tti.views.BitacoraView;
 import com.tti.views.CalificacionAlumnoView;
 import com.tti.views.CitaView;
+import com.tti.views.ListadoAlumnosPorProfesorView;
 import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
@@ -127,6 +128,8 @@ public class PanelDeControl extends CustomComponent{
 	        alumnos.addSeparator();
 	        alumnos.addItem("Revisar Informe", subirInforme);
 	        alumnos.addItem("Calificar", calificarAlumnosCommand);
+	        alumnos.addSeparator();
+	        alumnos.addItem("Ver Mis Alumnos", misAlumnosCommand);
         }
         menubar.setHtmlContentAllowed(true);
         
@@ -254,7 +257,13 @@ public class PanelDeControl extends CustomComponent{
         	getUI().getNavigator().navigateTo(ReportesView.NAME);
         }
     };
-
+    
+    private Command misAlumnosCommand = new Command() {
+        public void menuSelected(MenuItem selectedItem) {
+        	getUI().getNavigator().navigateTo(ListadoAlumnosPorProfesorView.NAME);
+        }
+    };
+    
 	
 
 }

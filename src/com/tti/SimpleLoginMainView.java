@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import com.processEngine.MotorProcesos;
 import com.tti.componentes.PanelDeControl;
+import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -34,23 +35,33 @@ public class SimpleLoginMainView extends CustomComponent implements View {
     	int dia = fechaHoy.get(Calendar.DATE);
     	String mes = fechaHoy.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     	int anno = fechaHoy.get(Calendar.YEAR);
-    	ttcual = new Label("<h3>Actualmente estás en :</h3>", ContentMode.HTML);
     	textoHoy = new Label("<p>Fecha de Hoy: " + dia + " de " + mes + " de " + anno + "</p>", ContentMode.HTML);
     	diasFin = new Label("<p>Faltan 15 Dias para el termino del Segundo Semestre de 2013</p>", ContentMode.HTML);
     	fechaFinSemestre = new Label("<p>El semestre termina el 30 de Enero de 2013</p>", ContentMode.HTML);
     	panelDeControl = new PanelDeControl("Username");
+    	ttcual = new Label("<h3>Actualmente estás cursando: Trabajo de Título II</h3>", ContentMode.HTML);
         setCompositionRoot(new CssLayout(panelDeControl, ttcual, textoHoy, diasFin, fechaFinSemestre));
     }
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // Get the user name from the session
-        username = String.valueOf(getSession().getAttribute("user"));
-        List<Rol> roles = (List<Rol>) getSession().getAttribute("roles");
-        panelDeControl = new PanelDeControl(username,roles);
-        setCompositionRoot(new CssLayout(panelDeControl, ttcual, textoHoy, diasFin, fechaFinSemestre));
-        Notification.show(username);
-//        new Notification("Caption", String.valueOf(getSession().getAttribute("rol")), Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
-        
+    	
+    	List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
+		if(!userRol.isEmpty()){	
+			username = String.valueOf(getSession().getAttribute("user"));
+			panelDeControl = new PanelDeControl(username,userRol);
+			if(userRol.contains(Rol.ALUMNO)){
+				if(username == "alumno@utem.cl"){ //USUARIO DE PRUEBA
+				}
+				setCompositionRoot(new CssLayout(panelDeControl, ttcual, textoHoy, diasFin, fechaFinSemestre));
+			}else{
+				setCompositionRoot(new CssLayout(panelDeControl,textoHoy, diasFin, fechaFinSemestre));
+			}
+			Notification.show(username);
+		}else{
+			//Mostrar que no tiene los permisos
+			SinPermisoComponent sinPermiso = new SinPermisoComponent();
+		    setCompositionRoot(new CssLayout(sinPermiso));
+		}
     }
 }

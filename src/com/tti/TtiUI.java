@@ -8,6 +8,7 @@ import com.tti.views.AvanceView;
 import com.tti.views.BitacoraView;
 import com.tti.views.CalificacionAlumnoView;
 import com.tti.views.CitaView;
+import com.tti.views.ListadoAlumnosPorProfesorView;
 import com.tti.views.ListadoAlumnosView;
 import com.tti.views.ListadoProfesoresView;
 import com.tti.views.ListadoReunionesView;
@@ -76,7 +77,7 @@ public class TtiUI extends UI {
 	        getNavigator().addView(BitacoraView.NAME, BitacoraView.class);
 	        getNavigator().addView(PerfilProfesorView.NAME, PerfilProfesorView.class);
 	        getNavigator().addView(ReportesView.NAME, ReportesView.class);
-	        
+	        getNavigator().addView(ListadoAlumnosPorProfesorView.NAME, ListadoAlumnosPorProfesorView.class);
 	        
 	        //
 	        // We use a view change handler to ensure the user is always redirected

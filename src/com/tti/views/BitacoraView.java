@@ -42,6 +42,11 @@ public class BitacoraView extends CustomComponent implements View{
 		panelDeControl = new PanelDeControl("username");
 		listadoReuniones = new Table("Histórico de Reuniones");
 		listadoReuniones.setContainerDataSource(TtiUI.container);
+		listadoReuniones.setVisibleColumns(new String[]{"caption", "description", "start", "end"});
+		listadoReuniones.setColumnHeader("caption", "Asunto");
+		listadoReuniones.setColumnHeader("description", "Descripcion");
+		listadoReuniones.setColumnHeader("start", "Fecha Inicio");
+		listadoReuniones.setColumnHeader("end", "Fecha Fin");
 		setCompositionRoot(new CssLayout(panelDeControl, descripcionLabel, listadoReuniones));
 	}
 }

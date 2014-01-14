@@ -31,8 +31,7 @@ public class ComboPersonaComponent extends CustomComponent {
 	
 	public ComboPersonaComponent(String caption, String codTipoPersona) {
 		this.value = "";
-		WSPersonaListar ws = new WSPersonaListar();
-		listaPersonas = ws.listarPersonas(codTipoPersona);
+		listaPersonas = WSPersonaListar.listarPersonas(codTipoPersona);
 		//SETTING COMBO
 		comboProfesor = new ComboBox(caption, this.getContainer());
 		comboProfesor.setInputPrompt("Seleccione un valor");

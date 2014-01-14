@@ -36,6 +36,11 @@ public class ListadoReunionesView extends CustomComponent implements View
 	public ListadoReunionesView() {
 		listadoReuniones = new Table("Histórico de Reuniones");
 		listadoReuniones.setContainerDataSource(TtiUI.container);
+		listadoReuniones.setVisibleColumns(new String[]{"caption", "description", "start", "end"});
+		listadoReuniones.setColumnHeader("caption", "Asunto");
+		listadoReuniones.setColumnHeader("description", "Descripcion");
+		listadoReuniones.setColumnHeader("start", "Fecha Inicio");
+		listadoReuniones.setColumnHeader("end", "Fecha Fin");
 		panelDeControl = new PanelDeControl("username");
 		setCompositionRoot(new CssLayout(panelDeControl, listadoReuniones));
 	}

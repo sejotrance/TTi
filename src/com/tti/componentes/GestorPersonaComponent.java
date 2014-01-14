@@ -1,11 +1,16 @@
 package com.tti.componentes;
 
+import ttiws.entidades.ResultReporteAlumnoTT;
+import ttiws.model.PersonaModel;
+
+import com.vaadin.addon.calendar.event.BasicEvent;
 import com.vaadin.client.metadata.Property;
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
@@ -21,29 +26,28 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class GestorUsuariosComponent extends CustomComponent{
+public class GestorPersonaComponent extends CustomComponent{
 
 	private static final long serialVersionUID = 8014497738893322335L;
 	private Table contactList = new Table();
     private TextField searchField = new TextField();
-    private Button nuevoButton = new Button("Nuevo");
-    private Button eliminarButton = new Button("Eliminar");
+//    private Button nuevoButton = new Button("Nuevo");
+//    private Button eliminarButton = new Button("Eliminar");
     private FormLayout editorLayout = new FormLayout();
     private FieldGroup editorFields = new FieldGroup();
     private static String[] fieldNames;
-    private IndexedContainer personaContainer;
+    private BeanItemContainer<ResultReporteAlumnoTT> personaContainer;
     
-    private static final String RUN = "RUN";
-    private static final String NOMBRE = "Nombre";
-    private static final String APELLIDO = "Apellido";
-    private static final String EMAIL = "Email";
+    private static final String RUN = "per_Run";
+    private static final String NOMBRE = "per_Nombre";
+    private static final String APELLIDO = "per_Apellido_Paterno";
 
 
-	public GestorUsuariosComponent(String[] fieldNames, IndexedContainer personaContainer, boolean dummy) {
+	public GestorPersonaComponent(String[] fieldNames, BeanItemContainer<ResultReporteAlumnoTT> personaContainer, boolean dummy) {
 		
-		GestorUsuariosComponent.fieldNames = fieldNames;
+		GestorPersonaComponent.fieldNames = fieldNames;
 		if(dummy){
-			this.personaContainer = createDummyDatasource();
+			this.personaContainer = null;
 		}else{
 			this.personaContainer = personaContainer;
 		}
@@ -51,7 +55,7 @@ public class GestorUsuariosComponent extends CustomComponent{
 		initContactList();
 		initEditor();
 		initSearch();
-		initAddRemoveButtons();
+//		initAddRemoveButtons();
 	}
 	
 	private void initLayout() {
@@ -64,7 +68,7 @@ public class GestorUsuariosComponent extends CustomComponent{
         HorizontalLayout bottomLeftLayout = new HorizontalLayout();
         leftLayout.addComponent(bottomLeftLayout);
         bottomLeftLayout.addComponent(searchField);
-        bottomLeftLayout.addComponent(nuevoButton);
+//        bottomLeftLayout.addComponent(nuevoButton);
 
         leftLayout.setSizeFull();
 
@@ -90,7 +94,7 @@ public class GestorUsuariosComponent extends CustomComponent{
 
                 editorFields.bind(field, fieldName);
         }
-        editorLayout.addComponent(eliminarButton);
+//        editorLayout.addComponent(eliminarButton);
 
         editorFields.setBuffered(false);
 	}
@@ -145,8 +149,7 @@ public class GestorUsuariosComponent extends CustomComponent{
 		public boolean passesFilter(Object itemId, Item item) {
 			String haystack = ("" + item.getItemProperty(RUN).getValue() 
 					+ item.getItemProperty(NOMBRE).getValue()
-					+ item.getItemProperty(APELLIDO).getValue() + item
-					.getItemProperty(EMAIL).getValue()).toLowerCase();
+					+ item.getItemProperty(APELLIDO).getValue());
 			return haystack.contains(needle);
 		}
 
@@ -155,75 +158,78 @@ public class GestorUsuariosComponent extends CustomComponent{
 		}
 	}
 
-	private void initAddRemoveButtons() {
-		nuevoButton.addClickListener(new ClickListener() {
-			public void buttonClick(ClickEvent event) {
+//	private void initAddRemoveButtons() {
+//		nuevoButton.addClickListener(new ClickListener() {
+//			public void buttonClick(ClickEvent event) {
+//
+//				/*
+//				 * Rows in the Container data model are called Item. Here we add
+//				 * a new row in the beginning of the list.
+//				 */
+//				personaContainer.removeAllContainerFilters();
+//				Object contactId = personaContainer.addItemAt(0);
+//
+//				/*
+//				 * Each Item has a set of Properties that hold values. Here we
+//				 * set a couple of those.
+//				 */
+//				contactList.getContainerProperty(contactId, RUN).setValue(
+//						"Ingrese un RUN válido");
+//				contactList.getContainerProperty(contactId, NOMBRE).setValue(
+//						"Nuevo");
+//				contactList.getContainerProperty(contactId, APELLIDO).setValue(
+//						"Elemento");
+//
+//				/* Lets choose the newly created contact to edit it. */
+//				contactList.select(contactId);
+//			}
+//		});
 
-				/*
-				 * Rows in the Container data model are called Item. Here we add
-				 * a new row in the beginning of the list.
-				 */
-				personaContainer.removeAllContainerFilters();
-				Object contactId = personaContainer.addItemAt(0);
-
-				/*
-				 * Each Item has a set of Properties that hold values. Here we
-				 * set a couple of those.
-				 */
-				contactList.getContainerProperty(contactId, RUN).setValue(
-						"Ingrese un RUN válido");
-				contactList.getContainerProperty(contactId, NOMBRE).setValue(
-						"Nuevo");
-				contactList.getContainerProperty(contactId, APELLIDO).setValue(
-						"Elemento");
-
-				/* Lets choose the newly created contact to edit it. */
-				contactList.select(contactId);
-			}
-		});
-
-		eliminarButton.addClickListener(new ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				Object contactId = contactList.getValue();
-				contactList.removeItem(contactId);
-			}
-		});
-	}
-	
+//		eliminarButton.addClickListener(new ClickListener() {
+//			public void buttonClick(ClickEvent event) {
+//				Object contactId = contactList.getValue();
+//				contactList.removeItem(contactId);
+//			}
+//		});
+//	}
+//	
 	/*
 	 * Generate some in-memory example data to play with. In a real application
 	 * we could be using SQLContainer, JPAContainer or some other to persist the
 	 * data.
 	 */
-	@SuppressWarnings("unchecked")
-	private static IndexedContainer createDummyDatasource() {
-		IndexedContainer ic = new IndexedContainer();
-
-		for (String p : fieldNames) {
-			ic.addContainerProperty(p, String.class, "");
-		}
-
-		/* Create dummy data by randomly combining first and last names */
-		String[] fnames = { "Pedro", "Alicia", "Jose", "Miguel", "Olivia",
-				"Nina", "Alex", "Rita", "Daniel", "Humberto", "Enrique", "René",
-				"Lisa", "Mariela", "Karin", "José", "Martina" };
-		String[] lnames = { "Hurtado", "Acuña", "Alarcón", "Vejar", "Castillo",
-				"Gutierrez", "Gonzalez", "Pérez", "Henriquez", "Aguayo", "Paredes",
-				"Jacobi", "Gárate", "Godoy", "López" };
-		for (int i = 0; i < 300; i++) {
-			Object id = ic.addItem();
-			ic.getContainerProperty(id, NOMBRE).setValue(
-					fnames[(int) (fnames.length * Math.random())]);
-			ic.getContainerProperty(id, APELLIDO).setValue(
-					lnames[(int) (lnames.length * Math.random())]);
-		}
-
-		return ic;
-	}
-	
+//	@SuppressWarnings("unchecked")
+//	private static BeanItemContainer<PersonaModel> createDummyDatasource() {
+//		BeanItemContainer<PersonaModel> ic =  new BeanItemContainer<PersonaModel>(PersonaModel.class);
+//
+//		for (String p : fieldNames) {
+//			ic.addContainerProperty(p, String.class, "");
+//		}
+//
+//		/* Create dummy data by randomly combining first and last names */
+//		String[] fnames = { "Pedro", "Alicia", "Jose", "Miguel", "Olivia",
+//				"Nina", "Alex", "Rita", "Daniel", "Humberto", "Enrique", "René",
+//				"Lisa", "Mariela", "Karin", "José", "Martina" };
+//		String[] lnames = { "Hurtado", "Acuña", "Alarcón", "Vejar", "Castillo",
+//				"Gutierrez", "Gonzalez", "Pérez", "Henriquez", "Aguayo", "Paredes",
+//				"Jacobi", "Gárate", "Godoy", "López" };
+//		for (int i = 0; i < 300; i++) {
+//			Object id = ic.addItem();
+//			ic.getContainerProperty(id, NOMBRE).setValue(
+//					fnames[(int) (fnames.length * Math.random())]);
+//			ic.getContainerProperty(id, APELLIDO).setValue(
+//					lnames[(int) (lnames.length * Math.random())]);
+//		}
+//
+//		return ic;
+//	}
+//	
 	private void initContactList() {
 		contactList.setContainerDataSource(personaContainer);
-		contactList.setVisibleColumns(new String[] { RUN, NOMBRE, APELLIDO, EMAIL });
+		contactList.setVisibleColumns(new String[] { RUN, NOMBRE, APELLIDO});
+		contactList.setColumnHeader("per_Run", "RUN");
+		contactList.setColumnHeader("per_Nombre", "Nombre");
+		contactList.setColumnHeader("per_Apellido_Paterno", "Apellido Paterno");
 		contactList.setSelectable(true);
 		contactList.setImmediate(true);
 

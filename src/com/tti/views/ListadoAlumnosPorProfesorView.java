@@ -5,6 +5,7 @@ import java.util.List;
 import ttiws.entidades.Persona;
 import ttiws.entidades.ResultReporteAlumnoTT;
 import ttiws.model.PersonaModel;
+import ttiws.serviciosPersona.WSPersonaConsultar;
 import ttiws.serviciosPersona.WSPersonaListar;
 import ttiws.serviciosReportes.WSReporteAlumnoTT;
 
@@ -21,9 +22,9 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 
-public class ListadoAlumnosView extends CustomComponent implements View{
+public class ListadoAlumnosPorProfesorView extends CustomComponent implements View{
 	
-	public static final String NAME = "ListadoAlumnos";
+	public static final String NAME = "MisAlumnos";
 	private PanelDeControl panelDeControl;
 	private GestorPersonaComponent gestorUsuarios;
 	private static final String RUN = "per_Run";
@@ -36,9 +37,15 @@ public class ListadoAlumnosView extends CustomComponent implements View{
 	@Override
 	public void enter(ViewChangeEvent event) {
 		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
-		if(userRol.contains(Rol.SECRETARIA)){		
-			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
-			List<ResultReporteAlumnoTT> resultadoReporte = WSReporteAlumnoTT.listarReporteAlumnoTT(1); //LISTAR ALUMNOS
+		if(userRol.contains(Rol.PROFESOR)){
+			String userName = String.valueOf(getSession().getAttribute("user"));
+			int codProfesor = 3; //TEST USER
+			if(!userName.equals("profesor@utem.cl")){//TEST USER
+				PersonaModel profesor = WSPersonaConsultar.consultarPorRun(userName);
+				codProfesor = profesor.getPer_Id();
+			}
+			panelDeControl = new PanelDeControl(userName, userRol);
+			List<ResultReporteAlumnoTT> resultadoReporte = WSReporteAlumnoTT.listarReporteAlumnoPorProfesor(codProfesor); //LISTAR ALUMNOS
 			BeanItemContainer<ResultReporteAlumnoTT> container = new BeanItemContainer<ResultReporteAlumnoTT>(ResultReporteAlumnoTT.class);
 			for (ResultReporteAlumnoTT alumno : resultadoReporte) {
 				container.addBean(alumno);
