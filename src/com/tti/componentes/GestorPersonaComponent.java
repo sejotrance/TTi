@@ -41,6 +41,7 @@ public class GestorPersonaComponent extends CustomComponent{
     private static final String RUN = "per_Run";
     private static final String NOMBRE = "per_Nombre";
     private static final String APELLIDO = "per_Apellido_Paterno";
+    private static final String PROFE_GUIA = "nombreProfesor";
 
 
 	public GestorPersonaComponent(String[] fieldNames, BeanItemContainer<ResultReporteAlumnoTT> personaContainer, boolean dummy) {
@@ -226,10 +227,11 @@ public class GestorPersonaComponent extends CustomComponent{
 //	
 	private void initContactList() {
 		contactList.setContainerDataSource(personaContainer);
-		contactList.setVisibleColumns(new String[] { RUN, NOMBRE, APELLIDO});
+		contactList.setVisibleColumns(new String[] { RUN, NOMBRE, APELLIDO, PROFE_GUIA});
 		contactList.setColumnHeader("per_Run", "RUN");
 		contactList.setColumnHeader("per_Nombre", "Nombre");
 		contactList.setColumnHeader("per_Apellido_Paterno", "Apellido Paterno");
+		contactList.setColumnHeader("nombreProfesor", "Profesor Guia");
 		contactList.setSelectable(true);
 		contactList.setImmediate(true);
 

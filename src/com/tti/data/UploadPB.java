@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
+import java.util.UUID;
 
+import com.tti.entidad.ArchivoDemo;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
@@ -16,6 +20,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.ProgressIndicator;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.FailedEvent;
 import com.vaadin.ui.Upload.FinishedEvent;
@@ -33,13 +38,23 @@ public class UploadPB extends VerticalLayout {
     private Label textualProgress = new Label();
     private static Embedded PDF = new Embedded("Archivo Subido"); 
     private ProgressIndicator pi = new ProgressIndicator();
-
+    private Table tablaArchivos;
     private LineBreakCounter counter = new LineBreakCounter();
 
     private Upload upload = new Upload(null, counter);
+	private BeanItemContainer<ArchivoDemo> container;
 
-    public UploadPB() {
-        setSpacing(true);
+    public UploadPB(boolean esAlumno) {
+    	if(!esAlumno){
+	        initDemoContainer(5);
+    	}else{
+	    	initUpload();
+	    	initDemoContainer(3);
+    	}
+    }
+    
+    void initUpload(){
+    	setSpacing(true);
 
         addComponent(new Label(
                 "A continuación seleccione el archivo que desea subir"));
@@ -144,10 +159,34 @@ public class UploadPB extends VerticalLayout {
                 pi.setVisible(false);
                 textualProgress.setVisible(false);
                 cancelProcessing.setVisible(false);
+                String identificador = UUID.randomUUID().toString();
+				String nombre = (event.getFilename() + "_" +  identificador);
+				String mimeType = event.getMIMEType();
+				ArchivoDemo archivo = new ArchivoDemo(container.size(), nombre, "/tmp/archivos", mimeType, new Date());
+				container.addBean(archivo);
             }
         });
-
     }
+    
+    private void initDemoContainer(int cantidad){
+		container = new BeanItemContainer<ArchivoDemo>(ArchivoDemo.class);
+		tablaArchivos = new Table("Mis archivos", container);
+		tablaArchivos.setColumnHeader("id", "ID");
+		tablaArchivos.setColumnHeader("nombre", "Nombre Archivo");
+		tablaArchivos.setColumnHeader("fecha", "fecha");
+		tablaArchivos.setColumnHeader("tipo", "Extensión");
+		tablaArchivos.setVisibleColumns(new String[] { "id", "nombre", "fecha", "tipo"});
+		if(cantidad > 0){
+			for(int i = 0; i < cantidad; i++){
+				String identificador = UUID.randomUUID().toString();
+				String nombre = ("Archivo_" + identificador);
+				ArchivoDemo archivo = new ArchivoDemo(i, nombre, "/tmp/archivos", "PDF", new Date());
+				container.addBean(archivo);
+				container.sort(new Object[]{"id"}, new boolean[]{true});
+			}
+		}
+		addComponent(tablaArchivos);
+	}
 
     public static class LineBreakCounter implements Receiver {
 
@@ -224,7 +263,8 @@ public class UploadPB extends VerticalLayout {
         public void setSlow(boolean value) {
             sleep = value;
         }
-
     }
+	
+	
 
 }

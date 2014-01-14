@@ -29,14 +29,15 @@ public class ListadoAlumnosView extends CustomComponent implements View{
 	private static final String RUN = "per_Run";
 	private static final String NOMBRE = "per_Nombre";
     private static final String APELLIDO = "per_Apellido_Paterno";
+    private static final String PROFE_GUIA = "nombreProfesor";
     private static final Label descripcionLabel = new Label("<h2> Listado de Alumnos Vigentes </h2>" + 
 			"<p> A continuacion se listan los alumnos vigentes en TTi. </p>", ContentMode.HTML);
-	private static final String[] nombreCampo = new String[] { RUN, NOMBRE, APELLIDO, "car_Nombre", "TTi_Nombre", "TTi_Tit1", "TTi_Tit2"};
+	private static final String[] nombreCampo = new String[] { RUN, NOMBRE, APELLIDO, PROFE_GUIA, "car_Nombre", "TTi_Nombre", "TTi_Tit1", "TTi_Tit2"};
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
-		if(userRol.contains(Rol.SECRETARIA)){		
+		if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			List<ResultReporteAlumnoTT> resultadoReporte = WSReporteAlumnoTT.listarReporteAlumnoTT(1); //LISTAR ALUMNOS
 			BeanItemContainer<ResultReporteAlumnoTT> container = new BeanItemContainer<ResultReporteAlumnoTT>(ResultReporteAlumnoTT.class);

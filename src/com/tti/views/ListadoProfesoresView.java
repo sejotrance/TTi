@@ -31,7 +31,7 @@ public class ListadoProfesoresView extends CustomComponent implements View{
 	@Override
 	public void enter(ViewChangeEvent event) {
 		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
-		if(userRol.contains(Rol.SECRETARIA)){			
+		if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){			
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
 			gestorUsuarios = new GestorUsuariosComponent(nombreCampo, null, true);
 			setCompositionRoot(new CssLayout(panelDeControl, descripcionLabel, gestorUsuarios));

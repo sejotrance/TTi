@@ -16,11 +16,13 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -44,11 +46,15 @@ Button.ClickListener {
 	
 	private final Button loginButton;
 	
+	private final Image logo;
+	
 	public SimpleLoginView() {
 	setSizeFull();
 	
 	texto = new Label("<div class=\"well\">Por favor ingrese usuario y contraseña para acceder a la aplicación.</div>",ContentMode.HTML);
-	
+	logo = new Image();
+	logo.setSource(new ThemeResource("../../imagenes/Utem.jpg"));
+	logo.setWidth("30%");
 	// Create the user input field
 	user = new TextField("Usuario:");
 	user.setWidth("300px");
@@ -71,7 +77,7 @@ Button.ClickListener {
 	loginButton = new Button("Login", this);
 	loginButton.setClickShortcut(KeyCode.ENTER);
 	// Add both to a panel
-	VerticalLayout fields = new VerticalLayout(texto, user, password, loginButton);
+	VerticalLayout fields = new VerticalLayout(logo, texto, user, password, loginButton);
 	fields.addStyleName("input-group");
 	//fields.setCaption("Por favor ingrese usuario y contraseña para acceder a la aplicación. (alumno@utem.cl/passw0rd)");
 	fields.setSpacing(true);

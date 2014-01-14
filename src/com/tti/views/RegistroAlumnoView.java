@@ -151,14 +151,14 @@ public class RegistroAlumnoView extends CustomComponent implements View{
 		  }}));
 		  
 		  
-		  //SOLO PARA TESTING
-		  editorLayout.addComponent(new Button("TEST", new Button.ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Notification.show("Valor: " + comboProfesor.getValue());
-			}
-		}));	
+//		  //SOLO PARA TESTING
+//		  editorLayout.addComponent(new Button("TEST", new Button.ClickListener() {
+//			
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//				Notification.show("Valor: " + comboProfesor.getValue());
+//			}
+//		}));	
   }
 
 }

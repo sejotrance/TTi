@@ -5,9 +5,11 @@ import java.util.List;
 import com.tti.componentes.PanelDeControl;
 import com.tti.componentes.SinPermisoComponent;
 import com.tti.enums.Rol;
+import com.tti.reportes.ChartWithExternalContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
@@ -26,7 +28,8 @@ public class ReportesView extends CustomComponent implements View {
 		List<Rol> userRol = (List<Rol>) getSession().getAttribute("roles");
 		if(userRol.contains(Rol.SECRETARIA) || userRol.contains(Rol.DIRECTOR_DEPARTAMENTO)){		
 			panelDeControl = new PanelDeControl(String.valueOf(getSession().getAttribute("user")), userRol);
-			setCompositionRoot(new CssLayout(panelDeControl, descripcion));
+			Component ret = new ChartWithExternalContainer();
+			setCompositionRoot(new CssLayout(panelDeControl, descripcion, ret));
 		}else{
 			//Mostrar que no tiene los permisos
 			SinPermisoComponent sinPermiso = new SinPermisoComponent();

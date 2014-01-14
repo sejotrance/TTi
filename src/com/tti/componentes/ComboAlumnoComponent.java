@@ -22,16 +22,16 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 
-public class ComboPersonaComponent extends CustomComponent {
+public class ComboAlumnoComponent extends CustomComponent {
 	private ComboBox comboProfesor;
 	private static final String PROPERTY_NAME = "name";
 	private static final String PROPERTY_VALUE = "value";
 	private static String value = "";
 	List<PersonaModel> listaPersonas;
 	
-	public ComboPersonaComponent(String caption, String codTipoPersona) {
+	public ComboAlumnoComponent(String caption, int codProfesor) {
 		this.value = "";
-		listaPersonas = WSPersonaListar.listarPersonas(codTipoPersona);
+		listaPersonas = WSPersonaListar.listarPersonasPorProfesor(codProfesor);
 		//SETTING COMBO
 		comboProfesor = new ComboBox(caption, this.getContainer());
 		comboProfesor.setInputPrompt("Seleccione un valor");
@@ -41,7 +41,7 @@ public class ComboPersonaComponent extends CustomComponent {
 		comboProfesor.setImmediate(true);
 		comboProfesor.setNullSelectionAllowed(false);
 		addHandlers();
-//		addListeners();
+		addListeners();
 		//SETTING LAYOUT
 		VerticalLayout layout = new VerticalLayout(comboProfesor);
 		setCompositionRoot(layout);
